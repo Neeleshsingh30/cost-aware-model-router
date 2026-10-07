@@ -1,0 +1,16 @@
+level,strategy,task_type,total_requests,successful_requests,failed_requests,accuracy,total_cost,average_cost_per_request,fast_model_calls,strong_model_calls,escalations,savings_vs_always_strong,savings_percentage_vs_always_strong
+overall,Always Fast Model,All,40,40,0,0.68,0.0003558,8.89e-06,40,0,0,0.0260802,98.6541
+overall,Always Strong Model,All,40,40,0,0.792,0.026436,0.0006609,0,40,0,0.0,0.0
+overall,Cost-Aware Router,All,40,40,0,0.7631,0.00884895,0.00022122,40,10,10,0.01758705,66.5269
+task,Always Fast Model,classification,10,10,0,0.6,4.448e-05,4.45e-06,10,0,0,0.0,0.0
+task,Always Fast Model,extraction,10,10,0,0.8833,0.00010384,1.038e-05,10,0,0,0.0,0.0
+task,Always Fast Model,summarisation,10,10,0,0.646,0.00010572,1.057e-05,10,0,0,0.0,0.0
+task,Always Fast Model,qa,10,10,0,0.5906,0.00010176,1.018e-05,10,0,0,0.0,0.0
+task,Always Strong Model,classification,10,10,0,0.9,0.003,0.0003,0,10,0,0.0,0.0
+task,Always Strong Model,extraction,10,10,0,0.9167,0.007568,0.0007568,0,10,0,0.0,0.0
+task,Always Strong Model,summarisation,10,10,0,0.6806,0.007634,0.0007634,0,10,0,0.0,0.0
+task,Always Strong Model,qa,10,10,0,0.6706,0.008234,0.0008234,0,10,0,0.0,0.0
+task,Cost-Aware Router,classification,10,10,0,0.8,0.0001677,1.677e-05,10,0,0,0.0,0.0
+task,Cost-Aware Router,extraction,10,10,0,0.9333,0.00828836,0.00082884,10,10,10,0.0,0.0
+task,Cost-Aware Router,summarisation,10,10,0,0.6573,0.00018824,1.882e-05,10,0,0,0.0,0.0
+task,Cost-Aware Router,qa,10,10,0,0.6618,0.00020465,2.046e-05,10,0,0,0.0,0.0
