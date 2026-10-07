@@ -1,9 +1,14 @@
 import os
+
 from dotenv import load_dotenv
 
 
 load_dotenv()
 
+
+# =========================================================
+# Environment Variable Helpers
+# =========================================================
 
 def get_required_env(name: str) -> str:
     value = os.getenv(name)
@@ -38,15 +43,42 @@ def get_int_env(name: str) -> int:
         )
 
 
+# =========================================================
 # Experiential Labs
+# =========================================================
+
 CHAT_API_KEY = get_required_env("CHAT_API_KEY")
 CHAT_BASE_URL = get_required_env("CHAT_BASE_URL")
 
+
+# =========================================================
 # Models
+# =========================================================
+
 FAST_MODEL_ID = get_required_env("FAST_MODEL_ID")
 STRONG_MODEL_ID = get_required_env("STRONG_MODEL_ID")
 
-# Pricing
+
+# =========================================================
+# Model Pricing
+# =========================================================
+#
+# All prices are USD per 1 million tokens.
+#
+# FAST model:
+# DeepSeek-V4-Flash
+#
+# STRONG model:
+# GPT-6-Sol
+#
+# Pricing should match the pricing configured
+# for your API provider.
+# =========================================================
+
+# ---------------------------------------------------------
+# Fast Model Pricing
+# ---------------------------------------------------------
+
 FAST_INPUT_PRICE_PER_MTOK = get_float_env(
     "FAST_INPUT_PRICE_PER_MTOK"
 )
@@ -54,6 +86,11 @@ FAST_INPUT_PRICE_PER_MTOK = get_float_env(
 FAST_OUTPUT_PRICE_PER_MTOK = get_float_env(
     "FAST_OUTPUT_PRICE_PER_MTOK"
 )
+
+
+# ---------------------------------------------------------
+# Strong Model Pricing
+# ---------------------------------------------------------
 
 STRONG_INPUT_PRICE_PER_MTOK = get_float_env(
     "STRONG_INPUT_PRICE_PER_MTOK"
@@ -63,7 +100,11 @@ STRONG_OUTPUT_PRICE_PER_MTOK = get_float_env(
     "STRONG_OUTPUT_PRICE_PER_MTOK"
 )
 
-# Router thresholds
+
+# =========================================================
+# Router Thresholds
+# =========================================================
+
 CONFIDENCE_THRESHOLD = get_float_env(
     "CONFIDENCE_THRESHOLD"
 )
@@ -72,21 +113,44 @@ COMPLEXITY_THRESHOLD = get_float_env(
     "COMPLEXITY_THRESHOLD"
 )
 
+
+# =========================================================
 # Generation
+# =========================================================
+
 MAX_OUTPUT_TOKENS = get_int_env(
     "MAX_OUTPUT_TOKENS"
 )
 
 
+# =========================================================
+# Configuration Display
+# =========================================================
+
 def print_config():
     print("Configuration loaded successfully.")
     print()
 
+    # -----------------------------------------------------
+    # API
+    # -----------------------------------------------------
+
     print(f"CHAT_BASE_URL: {CHAT_BASE_URL}")
+
+    print()
+
+    # -----------------------------------------------------
+    # Models
+    # -----------------------------------------------------
+
     print(f"FAST_MODEL_ID: {FAST_MODEL_ID}")
     print(f"STRONG_MODEL_ID: {STRONG_MODEL_ID}")
 
     print()
+
+    # -----------------------------------------------------
+    # Fast Model Pricing
+    # -----------------------------------------------------
 
     print(
         f"FAST_INPUT_PRICE_PER_MTOK: "
@@ -97,6 +161,12 @@ def print_config():
         f"FAST_OUTPUT_PRICE_PER_MTOK: "
         f"{FAST_OUTPUT_PRICE_PER_MTOK}"
     )
+
+    print()
+
+    # -----------------------------------------------------
+    # Strong Model Pricing
+    # -----------------------------------------------------
 
     print(
         f"STRONG_INPUT_PRICE_PER_MTOK: "
@@ -110,6 +180,10 @@ def print_config():
 
     print()
 
+    # -----------------------------------------------------
+    # Router Thresholds
+    # -----------------------------------------------------
+
     print(
         f"CONFIDENCE_THRESHOLD: "
         f"{CONFIDENCE_THRESHOLD}"
@@ -120,6 +194,12 @@ def print_config():
         f"{COMPLEXITY_THRESHOLD}"
     )
 
+    print()
+
+    # -----------------------------------------------------
+    # Generation
+    # -----------------------------------------------------
+
     print(
         f"MAX_OUTPUT_TOKENS: "
         f"{MAX_OUTPUT_TOKENS}"
@@ -127,11 +207,22 @@ def print_config():
 
     print()
 
+    # -----------------------------------------------------
+    # Security
+    # -----------------------------------------------------
+
     print("CHAT_API_KEY: ****MASKED****")
 
+
+# =========================================================
+# Main
+# =========================================================
 
 if __name__ == "__main__":
     try:
         print_config()
+
     except ValueError as error:
-        print(f"Configuration Error: {error}")
+        print(
+            f"Configuration Error: {error}"
+        )
