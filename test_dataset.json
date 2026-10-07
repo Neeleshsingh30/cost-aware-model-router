@@ -1,0 +1,488 @@
+[
+  {
+    "id": "classification_01",
+    "task_type": "classification",
+    "input": "The customer was charged twice for the same invoice.",
+    "expected_output": "billing",
+    "evaluation_criteria": "Return exactly 'billing' because the issue concerns duplicate charges.",
+    "categories": [
+      "billing",
+      "technical",
+      "account",
+      "general"
+    ]
+  },
+  {
+    "id": "classification_02",
+    "task_type": "classification",
+    "input": "The customer cannot reset their password because the reset email never arrives.",
+    "expected_output": "account",
+    "evaluation_criteria": "Return exactly 'account' because the request concerns account access and password reset.",
+    "categories": [
+      "billing",
+      "technical",
+      "account",
+      "general"
+    ]
+  },
+  {
+    "id": "classification_03",
+    "task_type": "classification",
+    "input": "The mobile application closes immediately after the user taps the login button.",
+    "expected_output": "technical",
+    "evaluation_criteria": "Return exactly 'technical' because the issue is an application malfunction.",
+    "categories": [
+      "billing",
+      "technical",
+      "account",
+      "general"
+    ]
+  },
+  {
+    "id": "classification_04",
+    "task_type": "classification",
+    "input": "The customer asks whether the company offers annual subscriptions for small businesses.",
+    "expected_output": "general",
+    "evaluation_criteria": "Return exactly 'general' because this is a general product/service information request.",
+    "categories": [
+      "billing",
+      "technical",
+      "account",
+      "general"
+    ]
+  },
+  {
+    "id": "classification_05",
+    "task_type": "classification",
+    "input": "A distributor reports that the payment received against invoice INV-4821 is not reflected in the account statement.",
+    "expected_output": "billing",
+    "evaluation_criteria": "Return exactly 'billing' because the issue concerns payment reconciliation.",
+    "categories": [
+      "billing",
+      "technical",
+      "account",
+      "general"
+    ]
+  },
+  {
+    "id": "classification_06",
+    "task_type": "classification",
+    "input": "The user can sign in from the office laptop but receives an 'account locked' message from the mobile device after several unsuccessful attempts.",
+    "expected_output": "account",
+    "evaluation_criteria": "Return exactly 'account' because the primary issue is account lockout and access.",
+    "categories": [
+      "billing",
+      "technical",
+      "account",
+      "general"
+    ]
+  },
+  {
+    "id": "classification_07",
+    "task_type": "classification",
+    "input": "The reporting dashboard loads the sales page but shows a blank chart after the user selects the monthly date range.",
+    "expected_output": "technical",
+    "evaluation_criteria": "Return exactly 'technical' because the dashboard is malfunctioning.",
+    "categories": [
+      "billing",
+      "technical",
+      "account",
+      "general"
+    ]
+  },
+  {
+    "id": "classification_08",
+    "task_type": "classification",
+    "input": "A customer wants to know whether invoices can be downloaded in PDF format and whether the feature is available on all plans.",
+    "expected_output": "general",
+    "evaluation_criteria": "Return exactly 'general' because the customer is asking for product capability information.",
+    "categories": [
+      "billing",
+      "technical",
+      "account",
+      "general"
+    ]
+  },
+  {
+    "id": "classification_09",
+    "task_type": "classification",
+    "input": "The customer says the refund amount shown in the portal is lower than the amount originally paid and asks for an explanation of the difference.",
+    "expected_output": "billing",
+    "evaluation_criteria": "Return exactly 'billing' because the issue concerns a refund amount and financial transaction.",
+    "categories": [
+      "billing",
+      "technical",
+      "account",
+      "general"
+    ]
+  },
+  {
+    "id": "classification_10",
+    "task_type": "classification",
+    "input": "The customer reports that the same user account works in one browser but fails authentication in another browser even after clearing the cache.",
+    "expected_output": "technical",
+    "evaluation_criteria": "Return exactly 'technical' because the issue involves browser-specific authentication behavior. This is intentionally more ambiguous and should test escalation behavior if the first model is uncertain.",
+    "categories": [
+      "billing",
+      "technical",
+      "account",
+      "general"
+    ]
+  },
+  {
+    "id": "extraction_01",
+    "task_type": "extraction",
+    "input": "Customer: Priya Mehta. Email: priya.mehta@example.com. Phone: 9876543210.",
+    "expected_output": {
+      "name": "Priya Mehta",
+      "email": "priya.mehta@example.com",
+      "phone": "9876543210"
+    },
+    "evaluation_criteria": "All three requested fields must exactly match the values present in the text.",
+    "fields": [
+      "name",
+      "email",
+      "phone"
+    ]
+  },
+  {
+    "id": "extraction_02",
+    "task_type": "extraction",
+    "input": "Order SO-10482 was placed by Arjun Patel on 2026-09-18 for product Industrial Solvent X with a quantity of 120 units.",
+    "expected_output": {
+      "order_id": "SO-10482",
+      "customer_name": "Arjun Patel",
+      "order_date": "2026-09-18",
+      "product": "Industrial Solvent X",
+      "quantity": 120
+    },
+    "evaluation_criteria": "Extract the order ID, customer name, date, product, and numeric quantity without inventing additional information.",
+    "fields": [
+      "order_id",
+      "customer_name",
+      "order_date",
+      "product",
+      "quantity"
+    ]
+  },
+  {
+    "id": "extraction_03",
+    "task_type": "extraction",
+    "input": "Ticket INC-7784 was opened by Neha Rao. Priority is High. The affected service is the Sales Dashboard.",
+    "expected_output": {
+      "ticket_id": "INC-7784",
+      "customer_name": "Neha Rao",
+      "priority": "High",
+      "service": "Sales Dashboard"
+    },
+    "evaluation_criteria": "Extract exactly the four requested values and preserve the priority label.",
+    "fields": [
+      "ticket_id",
+      "customer_name",
+      "priority",
+      "service"
+    ]
+  },
+  {
+    "id": "extraction_04",
+    "task_type": "extraction",
+    "input": "The shipment for invoice INV-3307 contains 45 cartons and is scheduled to arrive in Vadodara on 2026-10-12.",
+    "expected_output": {
+      "invoice_id": "INV-3307",
+      "cartons": 45,
+      "destination": "Vadodara",
+      "delivery_date": "2026-10-12"
+    },
+    "evaluation_criteria": "All four fields must be extracted accurately, including the numeric carton count and ISO date.",
+    "fields": [
+      "invoice_id",
+      "cartons",
+      "destination",
+      "delivery_date"
+    ]
+  },
+  {
+    "id": "extraction_05",
+    "task_type": "extraction",
+    "input": "The customer requested a credit limit of ₹850000. The current approved limit is ₹600000, and the requested review date is 2026-11-05.",
+    "expected_output": {
+      "requested_credit_limit": "₹850000",
+      "approved_credit_limit": "₹600000",
+      "review_date": "2026-11-05"
+    },
+    "evaluation_criteria": "Extract both monetary amounts exactly as written and the review date.",
+    "fields": [
+      "requested_credit_limit",
+      "approved_credit_limit",
+      "review_date"
+    ]
+  },
+  {
+    "id": "extraction_06",
+    "task_type": "extraction",
+    "input": "Ravi from ABC Distributors reported that product P-882 has a recurring packaging defect. He said approximately 18 boxes from batch B-41 were affected and requested a replacement shipment.",
+    "expected_output": {
+      "customer": "ABC Distributors",
+      "product_id": "P-882",
+      "batch_id": "B-41",
+      "affected_boxes": 18,
+      "requested_action": "replacement shipment"
+    },
+    "evaluation_criteria": "Extract customer, product, batch, affected quantity, and requested action. Do not infer a different remedy.",
+    "fields": [
+      "customer",
+      "product_id",
+      "batch_id",
+      "affected_boxes",
+      "requested_action"
+    ]
+  },
+  {
+    "id": "extraction_07",
+    "task_type": "extraction",
+    "input": "The sales meeting with Gujarat North Distributors is scheduled for Tuesday at 3 PM. The attendees are Kavita Shah, Rohan Desai, and Amit Joshi. The agenda includes overdue payments, Q4 demand, and promotional support.",
+    "expected_output": {
+      "customer_group": "Gujarat North Distributors",
+      "meeting_time": "Tuesday at 3 PM",
+      "attendees": [
+        "Kavita Shah",
+        "Rohan Desai",
+        "Amit Joshi"
+      ],
+      "agenda": [
+        "overdue payments",
+        "Q4 demand",
+        "promotional support"
+      ]
+    },
+    "evaluation_criteria": "Extract the meeting details and preserve all three attendees and all three agenda items. This tests multi-field extraction.",
+    "fields": [
+      "customer_group",
+      "meeting_time",
+      "attendees",
+      "agenda"
+    ]
+  },
+  {
+    "id": "extraction_08",
+    "task_type": "extraction",
+    "input": "Contract C-2049 was renewed for 12 months at an annual value of ₹24,00,000. The renewal was approved by the finance manager, but the exact approval date was not recorded in the note.",
+    "expected_output": {
+      "contract_id": "C-2049",
+      "renewal_period": "12 months",
+      "annual_value": "₹24,00,000",
+      "approved_by": "finance manager",
+      "approval_date": null
+    },
+    "evaluation_criteria": "Extract all available fields and return null for approval_date because the date is explicitly absent.",
+    "fields": [
+      "contract_id",
+      "renewal_period",
+      "annual_value",
+      "approved_by",
+      "approval_date"
+    ]
+  },
+  {
+    "id": "extraction_09",
+    "task_type": "extraction",
+    "input": "A customer escalation references three invoices: INV-1102 for ₹1,20,000, INV-1108 for ₹85,000, and INV-1114 for ₹2,10,000. The customer claims all three are overdue, but the note says INV-1114 was already paid on 2026-09-29.",
+    "expected_output": {
+      "invoices": [
+        {
+          "invoice_id": "INV-1102",
+          "amount": "₹1,20,000",
+          "status": "overdue"
+        },
+        {
+          "invoice_id": "INV-1108",
+          "amount": "₹85,000",
+          "status": "overdue"
+        },
+        {
+          "invoice_id": "INV-1114",
+          "amount": "₹2,10,000",
+          "status": "paid"
+        }
+      ],
+      "payment_date_for_INV-1114": "2026-09-29"
+    },
+    "evaluation_criteria": "Correctly distinguish the customer's claim from the payment information explicitly stated in the note.",
+    "fields": [
+      "invoices",
+      "payment_date_for_INV-1114"
+    ]
+  },
+  {
+    "id": "extraction_10",
+    "task_type": "extraction",
+    "input": "The incident review states that API latency increased from roughly 220 ms to 1.8 seconds between 10:00 and 10:30 UTC. Error rate reached 7.4%. The team suspects database connection saturation, but no root cause has been confirmed.",
+    "expected_output": {
+      "previous_latency": "220 ms",
+      "peak_latency": "1.8 seconds",
+      "time_window": "10:00 to 10:30 UTC",
+      "error_rate": "7.4%",
+      "suspected_cause": "database connection saturation",
+      "confirmed_root_cause": null
+    },
+    "evaluation_criteria": "Extract measurements exactly and distinguish the suspected cause from a confirmed root cause. This is intentionally complex.",
+    "fields": [
+      "previous_latency",
+      "peak_latency",
+      "time_window",
+      "error_rate",
+      "suspected_cause",
+      "confirmed_root_cause"
+    ]
+  },
+  {
+    "id": "summarisation_01",
+    "task_type": "summarisation",
+    "input": "The support team received 42 customer tickets on Monday. Most tickets were related to password resets and invoice questions. The team resolved 37 tickets on the same day and carried five tickets into Tuesday.",
+    "expected_output": "The support team received 42 tickets on Monday, mainly about password resets and invoices. It resolved 37 the same day, leaving five for Tuesday.",
+    "evaluation_criteria": "Preserve the ticket volume, main issue categories, same-day resolution count, and carryover count without adding information."
+  },
+  {
+    "id": "summarisation_02",
+    "task_type": "summarisation",
+    "input": "The sales team contacted 85 distributors during September. Twenty-six distributors requested product quotations, 18 requested credit terms, and 11 asked for samples. The remaining contacts either did not respond or requested follow-up in October.",
+    "expected_output": "In September, sales contacted 85 distributors. Twenty-six requested quotations, 18 asked about credit terms, and 11 requested samples, while the remaining contacts required follow-up or did not respond.",
+    "evaluation_criteria": "Retain the total outreach and all major response categories and counts."
+  },
+  {
+    "id": "summarisation_03",
+    "task_type": "summarisation",
+    "input": "A software release introduced a new dashboard export feature. After deployment, some users reported that exports containing more than 50,000 rows timed out. The engineering team reproduced the issue and identified a query performance bottleneck. A patch was prepared to process large exports in batches.",
+    "expected_output": "A new dashboard export feature caused timeouts for exports over 50,000 rows. Engineering reproduced the issue, identified a query performance bottleneck, and prepared a batching-based patch.",
+    "evaluation_criteria": "Capture the release, failure condition, root cause identified by engineering, and planned fix."
+  },
+  {
+    "id": "summarisation_04",
+    "task_type": "summarisation",
+    "input": "The procurement team evaluated three vendors for industrial sensors. Vendor A offered the lowest unit price but had a six-week lead time. Vendor B was more expensive but could deliver in two weeks and provided a longer warranty. Vendor C offered the best technical specifications but required a minimum order quantity that exceeded the current project requirement.",
+    "expected_output": "Vendor A had the lowest price but the longest lead time, Vendor B offered faster delivery and a longer warranty at a higher price, and Vendor C had the strongest specifications but an excessive minimum order quantity.",
+    "evaluation_criteria": "Preserve the key trade-offs among price, delivery, warranty, specifications, and minimum order quantity."
+  },
+  {
+    "id": "summarisation_05",
+    "task_type": "summarisation",
+    "input": "The monthly inventory review found that two fast-moving products were below the reorder point, while three slow-moving products had excess stock. The warehouse manager recommended increasing the reorder frequency for fast-moving products and reviewing purchase quantities for slow-moving products.",
+    "expected_output": "The inventory review found shortages in two fast-moving products and excess stock in three slow-moving products. The warehouse manager recommended more frequent reordering for fast-moving items and lower purchase quantities for slow-moving items.",
+    "evaluation_criteria": "Preserve the inventory findings and both recommendations."
+  },
+  {
+    "id": "summarisation_06",
+    "task_type": "summarisation",
+    "input": "A manufacturing plant collected temperature, vibration, pressure, motor current, and maintenance-history data from 18 machines for eight months. The engineering team wants to use the data to predict failures before they occur. The dataset contains several missing sensor readings and only 27 recorded failures. The team plans to begin with data cleaning and exploratory analysis before selecting a predictive model.",
+    "expected_output": "The plant collected multiple sensor and maintenance features from 18 machines over eight months to support predictive maintenance. The dataset has missing readings and only 27 failures, so the team plans to clean and analyze the data before selecting a model.",
+    "evaluation_criteria": "Retain the data sources, duration, machine count, missing-data issue, limited failure count, and planned workflow."
+  },
+  {
+    "id": "summarisation_07",
+    "task_type": "summarisation",
+    "input": "The company migrated its CRM database from an on-premises PostgreSQL server to a managed cloud database. During the migration, the team validated customer records, sales transactions, payment histories, and user permissions. A reconciliation process found 14 records with inconsistent customer IDs, which were corrected before the production cutover. The migration was completed during the planned maintenance window.",
+    "expected_output": "The company migrated its CRM from on-premises PostgreSQL to a managed cloud database. Customer, sales, payment, and permission data were validated, 14 inconsistent customer IDs were corrected, and the production cutover was completed within the planned maintenance window.",
+    "evaluation_criteria": "Include the migration, validation scope, 14 corrected records, and successful planned cutover."
+  },
+  {
+    "id": "summarisation_08",
+    "task_type": "summarisation",
+    "input": "A customer retention analysis compared customers who renewed their annual contracts with those who did not. Renewal rates were higher among customers who had at least one quarterly business review and lower among customers with unresolved support tickets. The analysis also found that the relationship between review frequency and renewal was weaker for very small accounts, so the team recommended segment-specific retention strategies.",
+    "expected_output": "Renewal rates were higher for customers receiving quarterly business reviews and lower for customers with unresolved support tickets. Because the review-renewal relationship was weaker for very small accounts, the team recommended segment-specific retention strategies.",
+    "evaluation_criteria": "Preserve both observed relationships and the recommendation, including the small-account qualification."
+  },
+  {
+    "id": "summarisation_09",
+    "task_type": "summarisation",
+    "input": "The data platform team investigated a sudden increase in daily pipeline failures. Initial monitoring showed that failures were concentrated in one ingestion job after a schema change upstream. The team compared successful and failed payloads, found a newly added nullable field being treated as required, and updated the validation logic. The failure rate returned to normal after the deployment, and the team added a schema-compatibility test to the CI pipeline.",
+    "expected_output": "A schema change caused failures in one ingestion job because a new nullable field was incorrectly treated as required. The validation logic was fixed, failures returned to normal, and a schema-compatibility test was added to CI.",
+    "evaluation_criteria": "Identify the incident, specific technical cause, fix, outcome, and preventive action."
+  },
+  {
+    "id": "summarisation_10",
+    "task_type": "summarisation",
+    "input": "A business intelligence review compared three sales forecasting approaches. A seasonal baseline performed well for stable products but missed sudden demand changes. Gradient boosting improved forecasts when customer, promotion, and inventory features were available, but performance degraded for products with sparse history. A neural network performed competitively on high-volume products but required more data and tuning. The team decided to use different forecasting approaches by product segment rather than selecting a single model for all products.",
+    "expected_output": "The review found that seasonal baselines worked for stable products, gradient boosting benefited from rich features but struggled with sparse history, and neural networks were competitive for high-volume products but required more data and tuning. The team chose a segment-specific forecasting strategy.",
+    "evaluation_criteria": "Preserve the strengths and limitations of all three approaches and the final segment-specific decision. This is intentionally complex."
+  },
+  {
+    "id": "qa_01",
+    "task_type": "qa",
+    "input": "The company requires employees to submit expense reports within seven calendar days after a business trip. Reports submitted after seven days require manager approval.",
+    "expected_output": "Expense reports must be submitted within seven calendar days after the business trip. Late reports require manager approval.",
+    "evaluation_criteria": "Answer only from the context and preserve the seven-day requirement and approval condition.",
+    "question": "What is the deadline for submitting an expense report, and what is required for a late submission?"
+  },
+  {
+    "id": "qa_02",
+    "task_type": "qa",
+    "input": "The support SLA for Priority 1 incidents is a 30-minute response time and four-hour target resolution time. Priority 2 incidents have a two-hour response time and one-business-day target resolution time.",
+    "expected_output": "Priority 1 has a 30-minute response target and a four-hour target resolution. Priority 2 has a two-hour response target and a one-business-day target resolution.",
+    "evaluation_criteria": "Return the correct response and resolution targets for both priorities.",
+    "question": "What are the response and target resolution times for Priority 1 and Priority 2 incidents?"
+  },
+  {
+    "id": "qa_03",
+    "task_type": "qa",
+    "input": "The sales dashboard contains revenue, units sold, gross margin, and sales-region filters. It is refreshed every morning at 6:00 AM UTC.",
+    "expected_output": "The dashboard contains revenue, units sold, gross margin, and sales-region filters, and it is refreshed daily at 6:00 AM UTC.",
+    "evaluation_criteria": "Answer using only the provided dashboard features and refresh schedule.",
+    "question": "What metrics and filter does the sales dashboard provide, and when is it refreshed?"
+  },
+  {
+    "id": "qa_04",
+    "task_type": "qa",
+    "input": "A customer order is considered eligible for cancellation until it enters the packing stage. Once packing has started, the customer must contact support to request a cancellation, and cancellation is not guaranteed.",
+    "expected_output": "An order can be cancelled directly until packing starts. After packing begins, the customer must contact support and cancellation is not guaranteed.",
+    "evaluation_criteria": "Distinguish the normal cancellation window from the support-dependent exception.",
+    "question": "Until what stage can an order be cancelled directly, and what happens after packing starts?"
+  },
+  {
+    "id": "qa_05",
+    "task_type": "qa",
+    "input": "The analytics team defines a qualified lead as a prospect with a verified phone number, an identified business requirement, and an estimated purchase timeline of less than six months.",
+    "expected_output": "A qualified lead has a verified phone number, an identified business requirement, and a purchase timeline of less than six months.",
+    "evaluation_criteria": "Return all three qualification conditions without adding others.",
+    "question": "What conditions must a prospect satisfy to be considered a qualified lead?"
+  },
+  {
+    "id": "qa_06",
+    "task_type": "qa",
+    "input": "A manufacturing company is deciding between preventive maintenance and predictive maintenance. Preventive maintenance schedules service based on time or usage intervals. Predictive maintenance uses sensor and historical failure data to estimate when maintenance is likely to be needed. The company has reliable sensor data from 24 machines and three years of maintenance records.",
+    "expected_output": "Predictive maintenance is a strong fit because the company has reliable sensor data and three years of maintenance records that can support estimating maintenance needs from historical patterns.",
+    "evaluation_criteria": "Recommend based only on the evidence in the context and explain why the available data supports the recommendation.",
+    "question": "Which maintenance approach is a strong fit for the company, and why?"
+  },
+  {
+    "id": "qa_07",
+    "task_type": "qa",
+    "input": "A company is choosing between a rule-based lead scoring system and a machine learning model. The rule-based system is transparent and easy to change but depends on manually defined thresholds. The machine learning model can learn relationships from historical conversions but requires sufficient labeled data and monitoring for performance changes. The company has only 120 historical leads and 14 recorded conversions.",
+    "expected_output": "The rule-based system is the safer starting point because the company has only 120 historical leads and 14 conversions, which may be too little labeled data for a reliable machine learning model. A machine learning approach could be reconsidered after collecting more representative conversion data.",
+    "evaluation_criteria": "Compare both approaches and recommend based on the limited labeled data. This is intentionally designed to test reasoning and escalation.",
+    "question": "Which lead-scoring approach is safer to start with given the available historical data, and why?"
+  },
+  {
+    "id": "qa_08",
+    "task_type": "qa",
+    "input": "An API normally responds within 250 ms. During a recent incident, response time increased to 2.4 seconds and error rate reached 8%. Database connection usage was near its configured limit, while CPU remained below 50%. The incident report states that connection saturation was the leading hypothesis, but the root cause investigation was still open.",
+    "expected_output": "Database connection saturation was the leading hypothesis because connection usage was near its configured limit while CPU remained below 50%, but the root cause had not yet been confirmed.",
+    "evaluation_criteria": "Distinguish evidence, hypothesis, and confirmed root cause. Do not claim that connection saturation was definitively proven.",
+    "question": "What is the leading hypothesis for the API incident, and has it been confirmed as the root cause?"
+  },
+  {
+    "id": "qa_09",
+    "task_type": "qa",
+    "input": "A distributor's sales fell 18% in Q3. The regional report shows that two major customers reduced orders because of inventory overstock, while three smaller customers increased purchases. The distributor also launched a new promotional campaign halfway through the quarter. The report does not provide enough information to determine whether the campaign caused the overall decline.",
+    "expected_output": "The overall decline was associated with reduced orders from two major customers due to inventory overstock, despite increased purchases from three smaller customers. The available information is insufficient to determine whether the promotional campaign caused or prevented part of the decline.",
+    "evaluation_criteria": "Synthesize the competing factors and explicitly avoid claiming a causal effect for the campaign. This is an ambiguity-sensitive case.",
+    "question": "What factors are associated with the distributor sales decline, and can the promotional campaign be said to have caused it?"
+  },
+  {
+    "id": "qa_10",
+    "task_type": "qa",
+    "input": "A company is designing an automated sales recommendation system. It has five years of sales history, customer segments, product attributes, inventory levels, promotion history, and regional information. However, product availability changes frequently, some historical promotions were not recorded consistently, and the company has not yet defined how recommendations will be evaluated. The team is considering a simple rules engine, a gradient-boosting model, and a neural recommendation model.",
+    "expected_output": "A gradient-boosting model is a reasonable candidate after data quality and evaluation criteria are addressed because the company has structured historical, customer, product, inventory, promotion, and regional features. A rules engine may be useful as a baseline, while a neural recommendation model should be considered only if the data volume and evaluation framework justify its additional complexity.",
+    "evaluation_criteria": "Compare the three approaches, account for data-quality and evaluation gaps, and give a conditional recommendation rather than assuming the most complex model is automatically best. This is a high-complexity escalation case.",
+    "question": "Which sales recommendation approach is a reasonable candidate, and what should be addressed before selecting the final approach?"
+  }
+]
