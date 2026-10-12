@@ -1,6 +1,6 @@
-openai
+fastapi
+uvicorn[standard]
+requests
 anthropic
 python-dotenv
 streamlit
-pandas
-scikit-learn
