@@ -1,4 +1,4 @@
-from confidence_evaluator import evaluate_with_fast_model
+from backend.app.core.confidence_evaluator import evaluate_with_fast_model
 
 
 def main():

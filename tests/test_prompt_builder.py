@@ -1,4 +1,4 @@
-from prompt_builder import build_prompt
+from backend.app.core.prompt_builder import build_prompt
 
 
 def test_classification():

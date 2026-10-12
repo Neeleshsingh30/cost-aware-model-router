@@ -5,7 +5,7 @@
 
 from unittest.mock import patch
 
-import router
+from backend.app.core import router
 
 
 def test_simple_request_fast_model():

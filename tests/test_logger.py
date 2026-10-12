@@ -1,6 +1,6 @@
 import csv
 
-from logger import (
+from backend.app.core.logger import (
     LOG_FILE,
     LOG_FIELDS,
     log_request,

@@ -3,7 +3,7 @@
 # Stage 5 unit-test-like examples
 # =========================================================
 
-from complexity_detector import calculate_complexity
+from backend.app.core.complexity_detector import calculate_complexity
 
 
 def test_simple_classification():

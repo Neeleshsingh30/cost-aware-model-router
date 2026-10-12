@@ -1,4 +1,4 @@
-from claude_client import (
+from backend.app.core.claude_client import (
     call_model,
     FAST_MODEL,
     STRONG_MODEL,

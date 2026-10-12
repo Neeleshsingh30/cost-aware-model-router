@@ -3,7 +3,7 @@
 # Stage 4 tests
 # =========================================================
 
-from confidence_evaluator import (
+from backend.app.core.confidence_evaluator import (
     parse_confidence_response,
 )
 
