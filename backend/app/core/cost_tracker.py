@@ -5,7 +5,7 @@
 
 from decimal import Decimal, ROUND_HALF_UP
 
-from config import (
+from .config import (
     FAST_INPUT_PRICE_PER_MTOK,
     FAST_OUTPUT_PRICE_PER_MTOK,
     STRONG_INPUT_PRICE_PER_MTOK,

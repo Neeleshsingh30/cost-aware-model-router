@@ -1,5 +1,6 @@
 import os
 import time
+from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 from anthropic import (
@@ -32,6 +33,7 @@ CHAT_BASE_URL = os.getenv(
     "CHAT_BASE_URL",
     "https://api.experientiallabs.ai",
 )
+CHAT_PROVIDER_HOST = urlparse(CHAT_BASE_URL).hostname or CHAT_BASE_URL
 
 FAST_MODEL = os.getenv("FAST_MODEL_ID")
 STRONG_MODEL = os.getenv("STRONG_MODEL_ID")
@@ -235,6 +237,20 @@ def call_model(
 
     except APIConnectionError as error:
 
+        transport_error = error
+        seen_errors = set()
+        while id(transport_error) not in seen_errors:
+            seen_errors.add(id(transport_error))
+            nested_error = (
+                transport_error.__cause__
+                or transport_error.__context__
+            )
+            if nested_error is None:
+                break
+            transport_error = nested_error
+
+        transport_detail = type(transport_error).__name__
+
         return {
             "text": "",
             "input_tokens": 0,
@@ -242,7 +258,10 @@ def call_model(
             "model": model,
             "latency_ms": None,
             "error": (
-                f"Connection error: {error}"
+                "Could not connect to the model provider at "
+                f"{CHAT_PROVIDER_HOST}. Check internet access, proxy settings, "
+                "and CHAT_BASE_URL. "
+                f"Transport error: {transport_detail}."
             ),
         }
 

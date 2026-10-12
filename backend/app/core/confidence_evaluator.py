@@ -9,7 +9,7 @@ import re
 
 from dotenv import load_dotenv
 
-from claude_client import call_model, FAST_MODEL
+from .claude_client import call_model, FAST_MODEL
 
 
 load_dotenv()

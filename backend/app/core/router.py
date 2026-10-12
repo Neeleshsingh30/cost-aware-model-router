@@ -3,22 +3,22 @@
 # Stage 6 + Cost Tracking: Cost-aware routing engine
 # =========================================================
 
-from config import (
+from .config import (
     COMPLEXITY_THRESHOLD,
     CONFIDENCE_THRESHOLD,
     FAST_MODEL_ID,
     STRONG_MODEL_ID,
 )
 
-from claude_client import call_model
+from .claude_client import call_model
 
-from complexity_detector import calculate_complexity
+from .complexity_detector import calculate_complexity
 
-from confidence_evaluator import (
+from .confidence_evaluator import (
     evaluate_with_fast_model,
 )
 
-from cost_tracker import (
+from .cost_tracker import (
     calculate_cost,
 )
 

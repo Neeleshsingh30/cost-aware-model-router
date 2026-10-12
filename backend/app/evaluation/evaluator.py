@@ -47,26 +47,26 @@ from pathlib import Path
 from typing import Any
 
 
-from claude_client import call_model
-from cost_tracker import calculate_cost
-from prompt_builder import build_prompt
-from router import route_request
+from ..core.claude_client import call_model
+from ..core.cost_tracker import calculate_cost
+from ..core.prompt_builder import build_prompt
+from ..core.router import route_request
 
 
 try:
 
-    from config import (
+    from ..core.config import (
         FAST_MODEL_ID,
         STRONG_MODEL_ID,
     )
 
 except ImportError:
 
-    from claude_client import (
+    from ..core.claude_client import (
         FAST_MODEL as FAST_MODEL_ID,
     )
 
-    from claude_client import (
+    from ..core.claude_client import (
         STRONG_MODEL as STRONG_MODEL_ID,
     )
 
@@ -75,11 +75,9 @@ except ImportError:
 # Paths
 # =========================================================
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parents[3]
 
-DATASET_PATH = (
-    BASE_DIR / "test_dataset.json"
-)
+DATASET_PATH = BASE_DIR / "data" / "test_dataset.json"
 
 DATA_DIR = (
     BASE_DIR / "data"

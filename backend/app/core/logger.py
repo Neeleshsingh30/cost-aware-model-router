@@ -9,7 +9,7 @@ from uuid import uuid4
 # File Configuration
 # =========================================================
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parents[3]
 DATA_DIR = BASE_DIR / "data"
 LOG_FILE = DATA_DIR / "routing_logs.csv"
 
