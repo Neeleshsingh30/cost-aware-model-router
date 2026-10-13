@@ -1,3 +1,4 @@
+import math
 import os
 
 from dotenv import load_dotenv
@@ -25,11 +26,17 @@ def get_float_env(name: str) -> float:
     value = get_required_env(name)
 
     try:
-        return float(value)
+        number = float(value)
     except ValueError:
         raise ValueError(
             f"Environment variable '{name}' must be a number."
+        ) from None
+
+    if not math.isfinite(number):
+        raise ValueError(
+            f"Environment variable '{name}' must be a finite number."
         )
+    return number
 
 
 def get_int_env(name: str) -> int:
@@ -121,6 +128,25 @@ COMPLEXITY_THRESHOLD = get_float_env(
 MAX_OUTPUT_TOKENS = get_int_env(
     "MAX_OUTPUT_TOKENS"
 )
+
+for _name, _price in (
+    ("FAST_INPUT_PRICE_PER_MTOK", FAST_INPUT_PRICE_PER_MTOK),
+    ("FAST_OUTPUT_PRICE_PER_MTOK", FAST_OUTPUT_PRICE_PER_MTOK),
+    ("STRONG_INPUT_PRICE_PER_MTOK", STRONG_INPUT_PRICE_PER_MTOK),
+    ("STRONG_OUTPUT_PRICE_PER_MTOK", STRONG_OUTPUT_PRICE_PER_MTOK),
+):
+    if _price < 0:
+        raise ValueError(f"Environment variable '{_name}' cannot be negative.")
+
+for _name, _threshold in (
+    ("CONFIDENCE_THRESHOLD", CONFIDENCE_THRESHOLD),
+    ("COMPLEXITY_THRESHOLD", COMPLEXITY_THRESHOLD),
+):
+    if not 0 <= _threshold <= 1:
+        raise ValueError(f"Environment variable '{_name}' must be between 0 and 1.")
+
+if MAX_OUTPUT_TOKENS <= 0:
+    raise ValueError("Environment variable 'MAX_OUTPUT_TOKENS' must be positive.")
 
 
 # =========================================================
