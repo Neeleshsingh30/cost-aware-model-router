@@ -32,18 +32,21 @@ def process_request(payload: RequestPayload) -> dict:
             savings=None,
             savings_percentage=None,
         )
-        return result
-
-    baseline = calculate_baseline_sonnet_cost(
-        input_tokens, output_tokens
-    )
-    savings = calculate_savings(result.get("actual_cost", 0), baseline)
-    result.update(
-        cost_available=True,
-        sonnet_baseline_cost=float(baseline),
-        savings=float(savings["savings"]),
-        savings_percentage=float(savings["savings_percentage"]),
-    )
+        baseline = 0.0
+        savings_amount = 0.0
+        savings_percentage = 0.0
+    else:
+        baseline = calculate_baseline_sonnet_cost(input_tokens, output_tokens)
+        savings = calculate_savings(result.get("actual_cost", 0), baseline)
+        baseline = float(baseline)
+        savings_amount = float(savings["savings"])
+        savings_percentage = float(savings["savings_percentage"])
+        result.update(
+            cost_available=True,
+            sonnet_baseline_cost=baseline,
+            savings=savings_amount,
+            savings_percentage=savings_percentage,
+        )
 
     log_request(
         task_type=payload.task_type,
@@ -57,9 +60,9 @@ def process_request(payload: RequestPayload) -> dict:
         escalation_reason=result.get("escalation_reason", ""),
         input_tokens=result.get("input_tokens", 0),
         output_tokens=result.get("output_tokens", 0),
-        actual_cost=result.get("actual_cost", 0.0),
-        sonnet_baseline_cost=float(baseline),
-        savings=float(savings["savings"]),
-        savings_percentage=float(savings["savings_percentage"]),
+        actual_cost=float(result.get("actual_cost") or 0.0),
+        sonnet_baseline_cost=baseline,
+        savings=savings_amount,
+        savings_percentage=savings_percentage,
     )
     return result
