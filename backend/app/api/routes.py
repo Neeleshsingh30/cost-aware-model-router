@@ -1,6 +1,8 @@
 """HTTP endpoints that expose model routing to the frontend."""
 
 import csv
+import logging
+
 from fastapi import APIRouter, HTTPException
 
 from ..core.logger import LOG_FILE
@@ -8,6 +10,7 @@ from ..schemas import RequestPayload
 from ..services.request_service import process_request
 
 router = APIRouter(prefix="/api/v1")
+logger = logging.getLogger(__name__)
 
 
 @router.post("/requests")
@@ -18,7 +21,11 @@ def create_request(payload: RequestPayload) -> dict:
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
     except Exception as error:
-        raise HTTPException(status_code=502, detail=f"Model request failed: {error}") from error
+        logger.exception("Request processing failed")
+        raise HTTPException(
+            status_code=502,
+            detail="Request could not be processed. Check the backend logs.",
+        ) from error
 
 
 @router.get("/dashboard/logs")
