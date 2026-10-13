@@ -1,7 +1,7 @@
 import csv
-import os
 from datetime import datetime, timezone
 from pathlib import Path
+from threading import Lock
 from uuid import uuid4
 
 
@@ -12,6 +12,7 @@ from uuid import uuid4
 BASE_DIR = Path(__file__).resolve().parents[3]
 DATA_DIR = BASE_DIR / "data"
 LOG_FILE = DATA_DIR / "routing_logs.csv"
+_LOG_LOCK = Lock()
 
 
 # =========================================================
@@ -132,8 +133,6 @@ def log_request(
     """
 
     try:
-        ensure_log_file()
-
         if request_id is None:
             request_id = generate_request_id()
 
@@ -169,22 +168,19 @@ def log_request(
             "savings_percentage": savings_percentage,
         }
 
-        with LOG_FILE.open(
-            mode="a",
-            newline="",
-            encoding="utf-8",
-        ) as file:
-
-            writer = csv.DictWriter(
-                file,
-                fieldnames=LOG_FIELDS,
-            )
-
-            writer.writerow(row)
+        with _LOG_LOCK:
+            ensure_log_file()
+            with LOG_FILE.open(
+                mode="a",
+                newline="",
+                encoding="utf-8",
+            ) as file:
+                writer = csv.DictWriter(file, fieldnames=LOG_FIELDS)
+                writer.writerow(row)
 
         return True
 
-    except (OSError, csv.Error, ValueError, TypeError) as error:
+    except (OSError, RuntimeError, csv.Error, ValueError, TypeError) as error:
         print(
             f"WARNING: Failed to write routing log: {error}"
         )
