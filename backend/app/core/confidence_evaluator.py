@@ -54,7 +54,8 @@ Field requirements:
 
 2. "confidence"
    - Must be a number between 0.0 and 1.0.
-   - Estimate how reliable your answer is.
+   - Self-report how reliable your answer is.
+   - This is not a calibrated probability or an independent validation.
    - 1.0 means very high confidence.
    - 0.0 means very low confidence.
    - Do not use confidence merely because the task is easy.
