@@ -118,13 +118,17 @@ def _build_error_result(
     complexity_score: float,
     complexity_reasons: list[str],
     fast_answer: str = "",
-    fast_confidence: float = 0.0,
+    fast_confidence: float | None = None,
     input_tokens: int = 0,
     output_tokens: int = 0,
     actual_cost: float = 0.0,
     latency_ms: float | None = None,
     escalated: bool = False,
     final_model: str | None = None,
+    routing_decision: str = "failed",
+    escalation_reason: str = "",
+    routing_reason: str = "",
+    confidence_source: str | None = None,
 ) -> dict:
     """
     Create a standardized routing result when
@@ -140,9 +144,12 @@ def _build_error_result(
         "initial_model": initial_model,
         "final_model": final_model,
         "confidence": fast_confidence,
+        "confidence_source": confidence_source,
         "complexity_score": complexity_score,
         "escalated": escalated,
-        "escalation_reason": error,
+        "routing_decision": routing_decision,
+        "routing_reason": routing_reason,
+        "escalation_reason": escalation_reason,
         "complexity_reasons": complexity_reasons,
 
         # Combined token usage across all calls.
@@ -267,22 +274,21 @@ def route_request(
                 actual_cost=strong_cost,
                 latency_ms=strong_result.get("latency_ms"),
                 escalated=False,
+                routing_decision="direct_strong_failed",
+                routing_reason="high_complexity",
             )
 
         return {
             "answer": strong_result["text"],
             "initial_model": STRONG_MODEL_ID,
             "final_model": STRONG_MODEL_ID,
-            "confidence": 1.0,
+            "confidence": None,
+            "confidence_source": None,
             "complexity_score": complexity_score,
             "escalated": False,
-            "escalation_reason": (
-                "Direct strong-model routing because "
-                f"complexity score "
-                f"{complexity_score:.2f} "
-                f">= threshold "
-                f"{COMPLEXITY_THRESHOLD:.2f}."
-            ),
+            "routing_decision": "direct_strong",
+            "routing_reason": "high_complexity",
+            "escalation_reason": "",
             "complexity_reasons": complexity_reasons,
 
             "input_tokens": strong_input_tokens,
@@ -395,12 +401,15 @@ def route_request(
                 complexity_score=complexity_score,
                 complexity_reasons=complexity_reasons,
                 fast_answer=fast_answer,
-                fast_confidence=fast_confidence,
+                fast_confidence=None,
                 input_tokens=total_input_tokens,
                 output_tokens=total_output_tokens,
                 actual_cost=total_cost,
                 latency_ms=total_latency_ms,
                 escalated=True,
+                routing_decision="escalation_failed",
+                escalation_reason="invalid_or_unavailable_fast_response",
+                routing_reason="invalid_or_unavailable_fast_response",
             )
 
         # -----------------------------------------------
@@ -411,10 +420,13 @@ def route_request(
             "answer": strong_result["text"],
             "initial_model": FAST_MODEL_ID,
             "final_model": STRONG_MODEL_ID,
-            "confidence": fast_confidence,
+            "confidence": fast_confidence if fast_result["valid"] else None,
+            "confidence_source": "fast_model_self_reported" if fast_result["valid"] else None,
             "complexity_score": complexity_score,
             "escalated": True,
-            "escalation_reason": escalation_reason,
+            "routing_decision": "escalated_to_strong",
+            "routing_reason": "invalid_or_unavailable_fast_response",
+            "escalation_reason": "invalid_or_unavailable_fast_response",
             "complexity_reasons": complexity_reasons,
 
             "input_tokens": total_input_tokens,
@@ -443,20 +455,11 @@ def route_request(
             < CONFIDENCE_THRESHOLD
         ):
 
-            escalation_reason = (
-                f"Fast-model confidence "
-                f"{fast_confidence:.2f} is below "
-                f"threshold "
-                f"{CONFIDENCE_THRESHOLD:.2f}."
-            )
+            escalation_reason = "low_confidence"
 
         else:
 
-            escalation_reason = (
-                "Fast model explicitly requested "
-                "escalation: "
-                + fast_result["reason"]
-            )
+            escalation_reason = "fast_model_requested_escalation"
 
         # -----------------------------------------------
         # Call Strong Model
@@ -525,6 +528,10 @@ def route_request(
 
                 "actual_cost": total_cost,
                 "latency_ms": total_latency_ms,
+                "confidence_source": "fast_model_self_reported",
+                "routing_decision": "escalation_failed",
+                "routing_reason": escalation_reason,
+                "escalation_reason": escalation_reason,
 
                 "fast_answer": fast_answer,
                 "fast_confidence": fast_confidence,
@@ -540,8 +547,11 @@ def route_request(
             "initial_model": FAST_MODEL_ID,
             "final_model": STRONG_MODEL_ID,
             "confidence": fast_confidence,
+            "confidence_source": "fast_model_self_reported",
             "complexity_score": complexity_score,
             "escalated": True,
+            "routing_decision": "escalated_to_strong",
+            "routing_reason": escalation_reason,
             "escalation_reason": escalation_reason,
             "complexity_reasons": complexity_reasons,
 
@@ -565,8 +575,11 @@ def route_request(
         "initial_model": FAST_MODEL_ID,
         "final_model": FAST_MODEL_ID,
         "confidence": fast_confidence,
+        "confidence_source": "fast_model_self_reported",
         "complexity_score": complexity_score,
         "escalated": False,
+        "routing_decision": "fast_model",
+        "routing_reason": "confidence_above_threshold",
         "escalation_reason": "",
         "complexity_reasons": complexity_reasons,
 
