@@ -122,6 +122,7 @@ def _build_error_result(
     input_tokens: int = 0,
     output_tokens: int = 0,
     actual_cost: float = 0.0,
+    latency_ms: float | None = None,
     escalated: bool = False,
     final_model: str | None = None,
 ) -> dict:
@@ -150,6 +151,7 @@ def _build_error_result(
 
         # Actual total cost across all calls.
         "actual_cost": actual_cost,
+        "latency_ms": latency_ms,
 
         # Debugging information.
         "fast_answer": fast_answer,
@@ -263,6 +265,7 @@ def route_request(
                 input_tokens=strong_input_tokens,
                 output_tokens=strong_output_tokens,
                 actual_cost=strong_cost,
+                latency_ms=strong_result.get("latency_ms"),
                 escalated=False,
             )
 
@@ -286,6 +289,7 @@ def route_request(
             "output_tokens": strong_output_tokens,
 
             "actual_cost": strong_cost,
+            "latency_ms": strong_result.get("latency_ms"),
 
             "fast_answer": "",
             "fast_confidence": None,
@@ -319,6 +323,7 @@ def route_request(
         fast_input_tokens=fast_input_tokens,
         fast_output_tokens=fast_output_tokens,
     )
+    fast_latency_ms = fast_result.get("latency_ms")
 
     # =====================================================
     # STEP 4: Fast-Model API / Validation Error
@@ -368,6 +373,10 @@ def route_request(
             fast_output_tokens
             + strong_output_tokens
         )
+        total_latency_ms = sum(
+            value for value in (fast_latency_ms, strong_result.get("latency_ms"))
+            if value is not None
+        )
 
         # -----------------------------------------------
         # Strong Model Also Failed
@@ -390,6 +399,7 @@ def route_request(
                 input_tokens=total_input_tokens,
                 output_tokens=total_output_tokens,
                 actual_cost=total_cost,
+                latency_ms=total_latency_ms,
                 escalated=True,
             )
 
@@ -411,6 +421,7 @@ def route_request(
             "output_tokens": total_output_tokens,
 
             "actual_cost": total_cost,
+            "latency_ms": total_latency_ms,
 
             "fast_answer": fast_answer,
             "fast_confidence": fast_confidence,
@@ -484,6 +495,10 @@ def route_request(
             fast_output_tokens
             + strong_output_tokens
         )
+        total_latency_ms = sum(
+            value for value in (fast_latency_ms, strong_result.get("latency_ms"))
+            if value is not None
+        )
 
         # -----------------------------------------------
         # Strong Model Failed
@@ -509,6 +524,7 @@ def route_request(
                 "output_tokens": total_output_tokens,
 
                 "actual_cost": total_cost,
+                "latency_ms": total_latency_ms,
 
                 "fast_answer": fast_answer,
                 "fast_confidence": fast_confidence,
@@ -533,6 +549,7 @@ def route_request(
             "output_tokens": total_output_tokens,
 
             "actual_cost": total_cost,
+            "latency_ms": total_latency_ms,
 
             "fast_answer": fast_answer,
             "fast_confidence": fast_confidence,
@@ -557,6 +574,7 @@ def route_request(
         "output_tokens": fast_output_tokens,
 
         "actual_cost": fast_cost,
+        "latency_ms": fast_latency_ms,
 
         "fast_answer": fast_answer,
         "fast_confidence": fast_confidence,
