@@ -1,4 +1,5 @@
 import csv
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from threading import Lock
@@ -37,6 +38,8 @@ LOG_FIELDS = [
     "sonnet_baseline_cost",
     "savings",
     "savings_percentage",
+    "latency_ms",
+    "request_status",
 ]
 
 
@@ -68,6 +71,23 @@ def ensure_log_file() -> None:
                 )
 
                 writer.writeheader()
+            return
+
+        # Extend logs created by earlier versions without dropping history.
+        with LOG_FILE.open("r", newline="", encoding="utf-8") as file:
+            reader = csv.DictReader(file)
+            existing_fields = reader.fieldnames or []
+            if existing_fields == LOG_FIELDS:
+                return
+            old_rows = list(reader)
+
+        temp_file = LOG_FILE.with_suffix(".csv.tmp")
+        with temp_file.open("w", newline="", encoding="utf-8") as file:
+            writer = csv.DictWriter(file, fieldnames=LOG_FIELDS)
+            writer.writeheader()
+            for old_row in old_rows:
+                writer.writerow({field: old_row.get(field, "") for field in LOG_FIELDS})
+        os.replace(temp_file, LOG_FILE)
 
     except OSError as error:
         raise RuntimeError(
@@ -121,6 +141,8 @@ def log_request(
     sonnet_baseline_cost: float,
     savings: float,
     savings_percentage: float,
+    latency_ms: float | None = None,
+    request_status: str = "success",
     request_id: str | None = None,
     timestamp: str | None = None,
 ) -> bool:
@@ -166,6 +188,8 @@ def log_request(
             "sonnet_baseline_cost": sonnet_baseline_cost,
             "savings": savings,
             "savings_percentage": savings_percentage,
+            "latency_ms": "" if latency_ms is None else latency_ms,
+            "request_status": request_status,
         }
 
         with _LOG_LOCK:
