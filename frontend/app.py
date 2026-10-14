@@ -16,7 +16,8 @@ LOGS_URL = f"{API_BASE_URL}/api/v1/dashboard/logs"
 EXPECTED_COLUMNS = [
     "request_id", "timestamp", "task_type", "input_length",
     "complexity_score", "complexity_reasons", "initial_model",
-    "final_model", "haiku_confidence", "escalated", "escalation_reason",
+    "final_model", "haiku_confidence", "confidence_source",
+    "routing_decision", "routing_reason", "escalated", "escalation_reason",
     "input_tokens", "output_tokens", "actual_cost",
     "sonnet_baseline_cost", "savings", "savings_percentage",
     "latency_ms", "request_status",
@@ -65,6 +66,27 @@ def _as_bool(value):
     return str(value).strip().lower() in {"true", "1", "yes"}
 
 
+def _routing_label(decision):
+    return {
+        "fast_model": "Fast model accepted",
+        "direct_strong": "Direct strong-model route",
+        "direct_strong_failed": "Direct strong-model route failed",
+        "escalated_to_strong": "Escalated to strong model",
+        "escalation_failed": "Escalation failed",
+    }.get(decision, "Routing decision unavailable")
+
+
+def _reason_label(reason):
+    labels = {
+        "high_complexity": "High complexity",
+        "low_confidence": "Fast-model confidence below threshold",
+        "fast_model_requested_escalation": "Fast model requested escalation",
+        "invalid_or_unavailable_fast_response": "Fast-model response was invalid or unavailable",
+        "confidence_above_threshold": "Fast-model confidence met the configured threshold",
+    }
+    return labels.get(reason, reason.replace("_", " ").capitalize() if reason else "")
+
+
 def _parse_timestamp(value):
     try:
         parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
@@ -92,6 +114,8 @@ def load_routing_logs():
             item["complexity_score"] = _as_float(item.get("complexity_score"))
             item["latency_ms"] = _as_float(item.get("latency_ms"), None)
             item["haiku_confidence"] = _as_float(item.get("haiku_confidence"), None)
+            item["confidence_source"] = item.get("confidence_source") or None
+            item["routing_decision"] = item.get("routing_decision") or "unknown"
             item["escalated"] = _as_bool(item.get("escalated"))
             item["_timestamp"] = _parse_timestamp(item.get("timestamp"))
             normalized.append(item)
@@ -145,8 +169,22 @@ def _render_result(result):
     with st.container(horizontal=True):
         st.metric("Initial model", result.get("initial_model") or "N/A", border=True)
         st.metric("Final model", result.get("final_model") or "N/A", border=True)
+        st.metric("Routing decision", _routing_label(result.get("routing_decision")), border=True)
         st.metric("Escalated", "Yes" if result.get("escalated") else "No", border=True)
-        st.metric("Confidence", f"{result['confidence']:.2f}" if result.get("confidence") is not None else "N/A", border=True)
+        confidence_source = result.get("confidence_source")
+        confidence_label = (
+            "Fast-model confidence (self-reported)"
+            if confidence_source == "fast_model_self_reported"
+            else "Confidence assessment"
+        )
+        confidence_value = (
+            f"{result['confidence']:.2f}"
+            if result.get("confidence") is not None
+            else "Not run (direct strong route)"
+            if result.get("routing_decision") in {"direct_strong", "direct_strong_failed"}
+            else "Unavailable"
+        )
+        st.metric(confidence_label, confidence_value, border=True)
         latency = result.get("latency_ms")
         st.metric("Model latency", f"{latency:,.0f} ms" if latency is not None else "N/A", border=True)
     with st.container(horizontal=True):
@@ -162,8 +200,10 @@ def _render_result(result):
         st.info("Cost analysis is unavailable because the provider returned no token usage.")
     elif result.get("savings_percentage") is not None:
         st.metric("Estimated savings", f"${savings:.8f}", f"{result['savings_percentage']:.2f}% vs. strong-model baseline", border=True)
-    if result.get("escalation_reason"):
-        st.caption(f"Routing detail: {result['escalation_reason']}")
+    if result.get("escalated") and result.get("escalation_reason"):
+        st.caption(f"Escalation reason: {_reason_label(result['escalation_reason'])}")
+    elif result.get("routing_reason"):
+        st.caption(f"Routing reason: {_reason_label(result['routing_reason'])}")
     if result.get("fast_answer"):
         with st.expander("Initial fast-model response"):
             st.write(result["fast_answer"])
@@ -286,6 +326,7 @@ def _filtered_rows(rows):
         and (not escalated_only or row["escalated"])
         and (not search or search in str(row.get("final_model") or "").lower()
              or search in str(row.get("initial_model") or "").lower()
+             or search in str(row.get("routing_reason") or "").lower()
              or search in str(row.get("escalation_reason") or "").lower())
     ]
     return filtered
@@ -486,6 +527,7 @@ def render_dashboard_page():
                 "Task": row.get("task_type") or "unknown",
                 "Initial model": row.get("initial_model") or "N/A",
                 "Final model": row.get("final_model") or "N/A",
+                "Routing decision": _routing_label(row.get("routing_decision")),
                 "Escalated": "Yes" if row["escalated"] else "No",
                 "Status": row.get("request_status") or "Unknown",
                 "Latency (ms)": row.get("latency_ms"),
@@ -493,7 +535,7 @@ def render_dashboard_page():
                 "Output tokens": int(row["output_tokens"]),
                 "Estimated cost (USD)": row["actual_cost"],
                 "Savings (USD)": row["savings"],
-                "Routing reason": row.get("escalation_reason") or "",
+                "Routing reason": row.get("routing_reason") or row.get("escalation_reason") or "",
             }
             if not query or query in " ".join(map(str, record.values())).lower():
                 history.append(record)
@@ -512,6 +554,7 @@ def render_dashboard_page():
                     latency = record["Latency (ms)"]
                     st.metric("Latency", f"{latency:,.0f} ms" if latency is not None else "N/A", border=True)
                 st.write(f'**Initial model:** {record["Initial model"]}')
+                st.write(f'**Routing decision:** {record["Routing decision"]}')
                 st.write(f'**Token usage:** {record["Input tokens"]:,} input · {record["Output tokens"]:,} output')
                 if record["Routing reason"]:
                     st.caption(record["Routing reason"])
