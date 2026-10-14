@@ -19,6 +19,7 @@ EXPECTED_COLUMNS = [
     "final_model", "haiku_confidence", "escalated", "escalation_reason",
     "input_tokens", "output_tokens", "actual_cost",
     "sonnet_baseline_cost", "savings", "savings_percentage",
+    "latency_ms", "request_status",
 ]
 TASKS = {
     "Classification": "classification",
@@ -89,6 +90,7 @@ def load_routing_logs():
             item["input_tokens"] = _as_float(item.get("input_tokens"))
             item["output_tokens"] = _as_float(item.get("output_tokens"))
             item["complexity_score"] = _as_float(item.get("complexity_score"))
+            item["latency_ms"] = _as_float(item.get("latency_ms"), None)
             item["haiku_confidence"] = _as_float(item.get("haiku_confidence"), None)
             item["escalated"] = _as_bool(item.get("escalated"))
             item["_timestamp"] = _parse_timestamp(item.get("timestamp"))
@@ -124,6 +126,11 @@ def _select_sample():
 
 def _render_result(result):
     st.subheader("Latest result")
+    st.caption(
+        f"Request ID: {result.get('request_id', 'Unavailable')} · "
+        f"Task: {result.get('task_type', 'Unavailable')} · "
+        f"Status: {result.get('request_status', 'Unavailable')}"
+    )
     if result.get("error"):
         st.error(f"Model request failed: {result['error']}")
     answer = result.get("answer") or ""
@@ -140,6 +147,8 @@ def _render_result(result):
         st.metric("Final model", result.get("final_model") or "N/A", border=True)
         st.metric("Escalated", "Yes" if result.get("escalated") else "No", border=True)
         st.metric("Confidence", f"{result['confidence']:.2f}" if result.get("confidence") is not None else "N/A", border=True)
+        latency = result.get("latency_ms")
+        st.metric("Model latency", f"{latency:,.0f} ms" if latency is not None else "N/A", border=True)
     with st.container(horizontal=True):
         usage_available = result.get("cost_available", True)
         st.metric("Input tokens", f"{result.get('input_tokens', 0):,}" if usage_available else "N/A", border=True)
@@ -155,6 +164,9 @@ def _render_result(result):
         st.metric("Estimated savings", f"${savings:.8f}", f"{result['savings_percentage']:.2f}% vs. strong-model baseline", border=True)
     if result.get("escalation_reason"):
         st.caption(f"Routing detail: {result['escalation_reason']}")
+    if result.get("fast_answer"):
+        with st.expander("Initial fast-model response"):
+            st.write(result["fast_answer"])
     reasons = result.get("complexity_reasons") or []
     if reasons:
         with st.expander("Routing signals"):
@@ -367,9 +379,25 @@ def render_dashboard_page():
         return
 
     total = len(filtered)
-    successful = sum(row["input_tokens"] > 0 or row["output_tokens"] > 0 for row in filtered)
+    successful = sum(
+        str(row.get("request_status") or "").lower() == "success"
+        or (not row.get("request_status") and bool(row["input_tokens"] or row["output_tokens"]))
+        for row in filtered
+    )
     fast = sum("deepseek" in str(row.get("final_model") or "").lower() for row in filtered)
+    strong = sum(
+        bool(row.get("final_model"))
+        and "deepseek" not in str(row.get("final_model") or "").lower()
+        for row in filtered
+    )
     escalated = sum(row["escalated"] for row in filtered)
+    failed = sum(
+        str(row.get("request_status") or "").lower() == "failed"
+        or (not row.get("request_status") and not (row["input_tokens"] or row["output_tokens"]))
+        for row in filtered
+    )
+    latencies = [row["latency_ms"] for row in filtered if row.get("latency_ms") is not None]
+    average_latency = sum(latencies) / len(latencies) if latencies else None
     actual_cost = sum(row["actual_cost"] for row in filtered)
     baseline = sum(row["sonnet_baseline_cost"] for row in filtered)
     savings = sum(row["savings"] for row in filtered)
@@ -380,8 +408,11 @@ def render_dashboard_page():
         st.metric("Requests", f"{total:,}", border=True)
         st.metric("Success rate", f"{success_rate:.1f}%", f"{successful} successful", border=True)
         st.metric("Fast-model share", f"{fast / total * 100:.1f}%", f"{fast} requests", border=True)
+        st.metric("Strong-model requests", f"{strong:,}", border=True)
         st.metric("Escalations", f"{escalated:,}", f"{escalated / total * 100:.1f}% of requests", border=True)
     with st.container(horizontal=True):
+        st.metric("Average latency", f"{average_latency:,.0f} ms" if average_latency is not None else "N/A", border=True)
+        st.metric("Failed requests", f"{failed:,}", border=True)
         st.metric("Estimated spend", f"${actual_cost:.8f}", border=True)
         st.metric("Strong-model baseline", f"${baseline:.8f}", border=True)
         st.metric("Estimated savings", f"${savings:.8f}", f"{savings_rate:.2f}%", border=True)
@@ -450,11 +481,14 @@ def render_dashboard_page():
         history = []
         for row in reversed(filtered):
             record = {
+                "Request ID": row.get("request_id") or "",
                 "Time": row.get("timestamp") or "",
                 "Task": row.get("task_type") or "unknown",
                 "Initial model": row.get("initial_model") or "N/A",
                 "Final model": row.get("final_model") or "N/A",
                 "Escalated": "Yes" if row["escalated"] else "No",
+                "Status": row.get("request_status") or "Unknown",
+                "Latency (ms)": row.get("latency_ms"),
                 "Input tokens": int(row["input_tokens"]),
                 "Output tokens": int(row["output_tokens"]),
                 "Estimated cost (USD)": row["actual_cost"],
@@ -468,10 +502,15 @@ def render_dashboard_page():
         for record in history:
             title = f'{record["Time"]} · {record["Task"]} · {record["Final model"]}'
             with st.expander(title):
+                if record["Request ID"]:
+                    st.caption(f'Request ID: {record["Request ID"]}')
                 with st.container(horizontal=True):
                     st.metric("Estimated cost", f'${record["Estimated cost (USD)"]:.8f}', border=True)
                     st.metric("Savings", f'${record["Savings (USD)"]:.8f}', border=True)
                     st.metric("Escalated", record["Escalated"], border=True)
+                    st.metric("Status", record["Status"], border=True)
+                    latency = record["Latency (ms)"]
+                    st.metric("Latency", f"{latency:,.0f} ms" if latency is not None else "N/A", border=True)
                 st.write(f'**Initial model:** {record["Initial model"]}')
                 st.write(f'**Token usage:** {record["Input tokens"]:,} input · {record["Output tokens"]:,} output')
                 if record["Routing reason"]:
