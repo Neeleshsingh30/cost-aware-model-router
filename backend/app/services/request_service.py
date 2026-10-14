@@ -1,7 +1,7 @@
 """Request orchestration for prompt building, model routing, and accounting."""
 
 from ..core.cost_tracker import calculate_baseline_sonnet_cost, calculate_savings
-from ..core.logger import log_request
+from ..core.logger import generate_request_id, log_request
 from ..core.prompt_builder import build_prompt
 from ..core.router import route_request
 from ..schemas import RequestPayload
@@ -19,6 +19,8 @@ def process_request(payload: RequestPayload) -> dict:
         question=payload.question,
     )
     result = route_request(text=prompt, task_type=payload.task_type)
+    request_id = generate_request_id()
+    request_status = "failed" if result.get("error") else "success"
 
     input_tokens = result.get("input_tokens", 0)
     output_tokens = result.get("output_tokens", 0)
@@ -64,5 +66,14 @@ def process_request(payload: RequestPayload) -> dict:
         sonnet_baseline_cost=baseline,
         savings=savings_amount,
         savings_percentage=savings_percentage,
+        latency_ms=result.get("latency_ms"),
+        request_status=request_status,
+        request_id=request_id,
+    )
+    result.update(
+        request_id=request_id,
+        task_type=payload.task_type,
+        request_status=request_status,
+        latency_ms=result.get("latency_ms"),
     )
     return result
