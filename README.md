@@ -580,6 +580,14 @@ python -m pip install pytest
 python -m pytest
 ```
 
+Audit regression checks with mocked provider calls can also be run using Python's standard library, without installing pytest:
+
+```powershell
+python -m unittest discover -s tests -p test_task6_coverage.py -v
+```
+
+These checks do not call the live provider. `tests/test_claude_client.py` and `tests/test_fast_confidence.py` are manual live-provider checks and are kept separate because they can make paid API requests.
+
 Unit tests mock provider calls; the evaluator is a live assessment run and may incur provider charges.
 
 ## Data and privacy
