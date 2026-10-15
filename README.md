@@ -526,7 +526,9 @@ The request endpoint returns the answer, initial and final model, confidence and
 
 ## Cost calculation
 
-Configured model prices are USD per million tokens:
+Configured model prices are USD per million tokens. The `.env.example` values are snapshots of the public Experiential catalog checked on **2026-10-15**: DeepSeek V4 Flash at $0.060 input / $0.12 output and GPT-6 Sol at $2 input / $10 output. See the [DeepSeek V4 Flash catalog](https://platform.experientiallabs.ai/models/deepseek-v4-flash) and [GPT-6 Sol catalog](https://platform.experientiallabs.ai/models/gpt-6-sol).
+
+Experiential lists multiple provider routes for some model slugs, and their prices can differ by provider, account tier, or configured waterfall. These settings are therefore estimates, not a per-request billing feed. Check the catalog and your account before using the figures for budgeting, and update `.env` when your effective rates change.
 
 ```text
 estimated cost     = (input tokens × input price + output tokens × output price) / 1,000,000
@@ -534,7 +536,7 @@ estimated savings  = strong-model baseline − router estimated cost
 savings percentage = estimated savings / strong-model baseline × 100
 ```
 
-If a request escalates, router cost includes both model calls, and the baseline uses the same combined token usage at strong-model prices. Prices must be kept current in `.env`. The figures are estimates from configured prices, not provider billing data.
+If a request escalates, router cost adds the fast and strong calls separately using their configured prices. The strong-model baseline prices the combined token usage from both calls at the strong model's rates. If any required token usage or price is missing, the cost and savings are unavailable. If the strong baseline is zero, savings percentage is reported as 0% to avoid division by zero. Dashboard cost totals are shown as unavailable when any included request lacks a complete cost value, so failed or incomplete requests are not silently counted as free.
 
 ### Worked example (illustrative prices)
 
