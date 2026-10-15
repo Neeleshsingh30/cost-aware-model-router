@@ -34,13 +34,13 @@ def test_simple_request_fast_model():
     }
 
     with patch(
-        "router.calculate_complexity",
+        "backend.app.core.router.calculate_complexity",
         return_value=fake_complexity,
     ), patch(
-        "router.evaluate_with_fast_model",
+        "backend.app.core.router.evaluate_with_fast_model",
         return_value=fake_fast_result,
     ), patch(
-        "router.call_model",
+        "backend.app.core.router.call_model",
     ) as mock_call_model:
 
         result = router.route_request(
@@ -83,13 +83,13 @@ def test_complex_request_direct_strong():
     }
 
     with patch(
-        "router.calculate_complexity",
+        "backend.app.core.router.calculate_complexity",
         return_value=fake_complexity,
     ), patch(
-        "router.call_model",
+        "backend.app.core.router.call_model",
         return_value=fake_strong_result,
     ) as mock_call_model, patch(
-        "router.evaluate_with_fast_model",
+        "backend.app.core.router.evaluate_with_fast_model",
     ) as mock_fast:
 
         result = router.route_request(
@@ -100,6 +100,10 @@ def test_complex_request_direct_strong():
     assert result["final_model"] == router.STRONG_MODEL_ID
     assert result["escalated"] is False
     assert result["answer"] == "Strong model answer."
+    assert result["confidence"] is None
+    assert result["confidence_source"] is None
+    assert result["routing_decision"] == "direct_strong"
+    assert result["routing_reason"] == "high_complexity"
 
     # Fast model must NOT be called.
     mock_fast.assert_not_called()
@@ -144,13 +148,13 @@ def test_low_confidence_escalation():
     }
 
     with patch(
-        "router.calculate_complexity",
+        "backend.app.core.router.calculate_complexity",
         return_value=fake_complexity,
     ), patch(
-        "router.evaluate_with_fast_model",
+        "backend.app.core.router.evaluate_with_fast_model",
         return_value=fake_fast_result,
     ), patch(
-        "router.call_model",
+        "backend.app.core.router.call_model",
         return_value=fake_strong_result,
     ):
 
@@ -162,6 +166,9 @@ def test_low_confidence_escalation():
     assert result["initial_model"] == router.FAST_MODEL_ID
     assert result["final_model"] == router.STRONG_MODEL_ID
     assert result["escalated"] is True
+    assert result["routing_decision"] == "escalated_to_strong"
+    assert result["routing_reason"] == "low_confidence"
+    assert result["escalation_reason"] == "low_confidence"
 
     # Strong answer must replace fast answer.
     assert result["answer"] == "Confirmed billing issue."
@@ -207,13 +214,13 @@ def test_explicit_escalation():
     }
 
     with patch(
-        "router.calculate_complexity",
+        "backend.app.core.router.calculate_complexity",
         return_value=fake_complexity,
     ), patch(
-        "router.evaluate_with_fast_model",
+        "backend.app.core.router.evaluate_with_fast_model",
         return_value=fake_fast_result,
     ), patch(
-        "router.call_model",
+        "backend.app.core.router.call_model",
         return_value=fake_strong_result,
     ):
 
@@ -258,13 +265,13 @@ def test_fast_model_accepted():
     }
 
     with patch(
-        "router.calculate_complexity",
+        "backend.app.core.router.calculate_complexity",
         return_value=fake_complexity,
     ), patch(
-        "router.evaluate_with_fast_model",
+        "backend.app.core.router.evaluate_with_fast_model",
         return_value=fake_fast_result,
     ), patch(
-        "router.call_model",
+        "backend.app.core.router.call_model",
     ) as mock_call_model:
 
         result = router.route_request(
@@ -284,6 +291,40 @@ def test_fast_model_accepted():
     print("PASS: High confidence -> Fast accepted")
 
 
+def test_fast_provider_error_does_not_call_strong_model():
+    fake_complexity = {"score": 0.20, "reasons": []}
+    fake_fast_result = {
+        "answer": "",
+        "confidence": 0.0,
+        "needs_escalation": True,
+        "reason": "Authentication failed.",
+        "valid": False,
+        "provider_error": True,
+        "model": router.FAST_MODEL_ID,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "latency_ms": None,
+    }
+
+    with patch(
+        "backend.app.core.router.calculate_complexity", return_value=fake_complexity
+    ), patch(
+        "backend.app.core.router.evaluate_with_fast_model", return_value=fake_fast_result
+    ), patch("backend.app.core.router.call_model") as mock_call_model:
+        result = router.route_request(
+            text="Classify this request.",
+            task_type="classification",
+        )
+
+    assert result["error"] == "Authentication failed."
+    assert result["routing_decision"] == "fast_model_failed"
+    assert result["routing_reason"] == "fast_provider_error"
+    assert result["escalated"] is False
+    assert result["confidence"] is None
+    mock_call_model.assert_not_called()
+    print("PASS: Fast provider failure does not call strong model")
+
+
 def main():
     print("=" * 60)
     print("STAGE 6 ROUTER TESTS")
@@ -294,6 +335,7 @@ def main():
     test_low_confidence_escalation()
     test_explicit_escalation()
     test_fast_model_accepted()
+    test_fast_provider_error_does_not_call_strong_model()
 
     print()
     print("=" * 60)
