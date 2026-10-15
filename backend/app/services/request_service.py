@@ -24,7 +24,17 @@ def process_request(payload: RequestPayload) -> dict:
 
     input_tokens = result.get("input_tokens", 0)
     output_tokens = result.get("output_tokens", 0)
-    cost_available = not result.get("error") or bool(input_tokens or output_tokens)
+    baseline = (
+        calculate_baseline_sonnet_cost(input_tokens, output_tokens)
+        if input_tokens is not None and output_tokens is not None
+        else None
+    )
+    cost_available = (
+        input_tokens is not None
+        and output_tokens is not None
+        and result.get("actual_cost") is not None
+        and baseline is not None
+    )
 
     if not cost_available:
         result.update(
@@ -34,11 +44,10 @@ def process_request(payload: RequestPayload) -> dict:
             savings=None,
             savings_percentage=None,
         )
-        baseline = 0.0
-        savings_amount = 0.0
-        savings_percentage = 0.0
+        baseline = None
+        savings_amount = None
+        savings_percentage = None
     else:
-        baseline = calculate_baseline_sonnet_cost(input_tokens, output_tokens)
         savings = calculate_savings(result.get("actual_cost", 0), baseline)
         baseline = float(baseline)
         savings_amount = float(savings["savings"])
@@ -65,7 +74,7 @@ def process_request(payload: RequestPayload) -> dict:
         escalation_reason=result.get("escalation_reason", ""),
         input_tokens=result.get("input_tokens", 0),
         output_tokens=result.get("output_tokens", 0),
-        actual_cost=float(result.get("actual_cost") or 0.0),
+        actual_cost=result.get("actual_cost"),
         sonnet_baseline_cost=baseline,
         savings=savings_amount,
         savings_percentage=savings_percentage,
