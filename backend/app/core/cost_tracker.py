@@ -101,9 +101,9 @@ def _round_money(value: Decimal) -> Decimal:
 
 def calculate_cost(
     model: str,
-    input_tokens: int,
-    output_tokens: int,
-) -> Decimal:
+    input_tokens: int | None,
+    output_tokens: int | None,
+) -> Decimal | None:
     """
     Calculate estimated model cost in USD.
 
@@ -112,6 +112,9 @@ def calculate_cost(
 
     Prices are USD per 1 million tokens.
     """
+
+    if input_tokens is None or output_tokens is None:
+        return None
 
     _validate_tokens(
         input_tokens,
@@ -126,6 +129,9 @@ def calculate_cost(
         )
 
     pricing = MODEL_PRICING[model]
+
+    if pricing["input_per_mtok"] is None or pricing["output_per_mtok"] is None:
+        return None
 
     input_price = _to_decimal(
         pricing["input_per_mtok"]
@@ -155,7 +161,7 @@ def calculate_cost(
 def calculate_baseline_sonnet_cost(
     input_tokens: int,
     output_tokens: int,
-) -> Decimal:
+) -> Decimal | None:
     """
     Backward-compatible function name.
 
@@ -175,8 +181,8 @@ def calculate_baseline_sonnet_cost(
 
 
 def calculate_savings(
-    actual_cost: Decimal,
-    sonnet_baseline_cost: Decimal,
+    actual_cost: Decimal | None,
+    sonnet_baseline_cost: Decimal | None,
 ) -> dict:
     """
     Calculate savings against the strong-model baseline.
@@ -189,6 +195,9 @@ def calculate_savings(
 
     Negative savings are allowed.
     """
+
+    if actual_cost is None or sonnet_baseline_cost is None:
+        return {"savings": None, "savings_percentage": None}
 
     actual_cost = _to_decimal(actual_cost)
 
