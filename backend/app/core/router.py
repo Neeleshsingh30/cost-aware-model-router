@@ -331,6 +331,25 @@ def route_request(
     )
     fast_latency_ms = fast_result.get("latency_ms")
 
+    # A provider call failure is terminal for this request. Retrying it
+    # immediately with the strong model can incur another charge while
+    # authentication, quota, or connectivity problems affect both models.
+    if fast_result.get("provider_error", False):
+        return _build_error_result(
+            error=fast_result["reason"],
+            initial_model=FAST_MODEL_ID,
+            final_model=FAST_MODEL_ID,
+            complexity_score=complexity_score,
+            complexity_reasons=complexity_reasons,
+            input_tokens=fast_input_tokens,
+            output_tokens=fast_output_tokens,
+            actual_cost=fast_cost,
+            latency_ms=fast_latency_ms,
+            escalated=False,
+            routing_decision="fast_model_failed",
+            routing_reason="fast_provider_error",
+        )
+
     # =====================================================
     # STEP 4: Fast-Model API / Validation Error
     # =====================================================
@@ -408,8 +427,8 @@ def route_request(
                 latency_ms=total_latency_ms,
                 escalated=True,
                 routing_decision="escalation_failed",
-                escalation_reason="invalid_or_unavailable_fast_response",
-                routing_reason="invalid_or_unavailable_fast_response",
+                escalation_reason="invalid_fast_response",
+                routing_reason="invalid_fast_response",
             )
 
         # -----------------------------------------------
@@ -425,8 +444,8 @@ def route_request(
             "complexity_score": complexity_score,
             "escalated": True,
             "routing_decision": "escalated_to_strong",
-            "routing_reason": "invalid_or_unavailable_fast_response",
-            "escalation_reason": "invalid_or_unavailable_fast_response",
+            "routing_reason": "invalid_fast_response",
+            "escalation_reason": "invalid_fast_response",
             "complexity_reasons": complexity_reasons,
 
             "input_tokens": total_input_tokens,
