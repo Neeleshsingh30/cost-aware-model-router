@@ -29,9 +29,9 @@ from .cost_tracker import (
 
 def _calculate_model_cost(
     model: str,
-    input_tokens: int,
-    output_tokens: int,
-) -> float:
+    input_tokens: int | None,
+    output_tokens: int | None,
+) -> float | None:
     """
     Calculate the cost of a single model call.
 
@@ -57,13 +57,10 @@ def _calculate_model_cost(
             f"{model}"
         )
 
-    return float(
-        calculate_cost(
-            model=model_key,
-            input_tokens=input_tokens,
-            output_tokens=output_tokens,
-        )
-    )
+    if input_tokens is None or output_tokens is None:
+        return None
+    cost = calculate_cost(model=model_key, input_tokens=input_tokens, output_tokens=output_tokens)
+    return float(cost) if cost is not None else None
 
 
 # =========================================================
@@ -72,11 +69,13 @@ def _calculate_model_cost(
 
 def _calculate_total_cost(
     *,
-    fast_input_tokens: int = 0,
-    fast_output_tokens: int = 0,
-    strong_input_tokens: int = 0,
-    strong_output_tokens: int = 0,
-) -> float:
+    fast_called: bool = False,
+    fast_input_tokens: int | None = None,
+    fast_output_tokens: int | None = None,
+    strong_called: bool = False,
+    strong_input_tokens: int | None = None,
+    strong_output_tokens: int | None = None,
+) -> float | None:
     """
     Calculate total cost across all model calls.
 
@@ -89,22 +88,24 @@ def _calculate_total_cost(
         Total router cost
     """
 
-    fast_cost = _calculate_model_cost(
-        model=FAST_MODEL_ID,
-        input_tokens=fast_input_tokens,
-        output_tokens=fast_output_tokens,
-    )
+    costs = []
+    for model, called, input_count, output_count in (
+        (FAST_MODEL_ID, fast_called, fast_input_tokens, fast_output_tokens),
+        (STRONG_MODEL_ID, strong_called, strong_input_tokens, strong_output_tokens),
+    ):
+        if not called:
+            continue
+        cost = _calculate_model_cost(model, input_count, output_count)
+        if cost is None:
+            return None
+        costs.append(cost)
+    return round(sum(costs), 8)
 
-    strong_cost = _calculate_model_cost(
-        model=STRONG_MODEL_ID,
-        input_tokens=strong_input_tokens,
-        output_tokens=strong_output_tokens,
-    )
 
-    return round(
-        fast_cost + strong_cost,
-        8,
-    )
+def _sum_token_counts(first: int | None, second: int | None) -> int | None:
+    if first is None or second is None:
+        return None
+    return first + second
 
 
 # =========================================================
@@ -238,16 +239,12 @@ def route_request(
             prompt=text,
         )
 
-        strong_input_tokens = (
-            strong_result["input_tokens"]
-        )
-
-        strong_output_tokens = (
-            strong_result["output_tokens"]
-        )
+        strong_input_tokens = strong_result.get("input_tokens")
+        strong_output_tokens = strong_result.get("output_tokens")
 
         strong_cost = (
             _calculate_total_cost(
+                strong_called=True,
                 strong_input_tokens=(
                     strong_input_tokens
                 ),
@@ -316,16 +313,12 @@ def route_request(
         fast_result["confidence"]
     )
 
-    fast_input_tokens = (
-        fast_result["input_tokens"]
-    )
-
-    fast_output_tokens = (
-        fast_result["output_tokens"]
-    )
+    fast_input_tokens = fast_result.get("input_tokens")
+    fast_output_tokens = fast_result.get("output_tokens")
 
     # Cost of first Fast call.
     fast_cost = _calculate_total_cost(
+        fast_called=True,
         fast_input_tokens=fast_input_tokens,
         fast_output_tokens=fast_output_tokens,
     )
@@ -370,34 +363,24 @@ def route_request(
             prompt=text,
         )
 
-        strong_input_tokens = (
-            strong_result["input_tokens"]
-        )
-
-        strong_output_tokens = (
-            strong_result["output_tokens"]
-        )
+        strong_input_tokens = strong_result.get("input_tokens")
+        strong_output_tokens = strong_result.get("output_tokens")
 
         # -----------------------------------------------
         # Total cost = Fast + Strong
         # -----------------------------------------------
 
         total_cost = _calculate_total_cost(
+            fast_called=True,
             fast_input_tokens=fast_input_tokens,
             fast_output_tokens=fast_output_tokens,
+            strong_called=True,
             strong_input_tokens=strong_input_tokens,
             strong_output_tokens=strong_output_tokens,
         )
 
-        total_input_tokens = (
-            fast_input_tokens
-            + strong_input_tokens
-        )
-
-        total_output_tokens = (
-            fast_output_tokens
-            + strong_output_tokens
-        )
+        total_input_tokens = _sum_token_counts(fast_input_tokens, strong_input_tokens)
+        total_output_tokens = _sum_token_counts(fast_output_tokens, strong_output_tokens)
         total_latency_ms = sum(
             value for value in (fast_latency_ms, strong_result.get("latency_ms"))
             if value is not None
@@ -489,34 +472,24 @@ def route_request(
             prompt=text,
         )
 
-        strong_input_tokens = (
-            strong_result["input_tokens"]
-        )
-
-        strong_output_tokens = (
-            strong_result["output_tokens"]
-        )
+        strong_input_tokens = strong_result.get("input_tokens")
+        strong_output_tokens = strong_result.get("output_tokens")
 
         # -----------------------------------------------
         # Total cost = Fast + Strong
         # -----------------------------------------------
 
         total_cost = _calculate_total_cost(
+            fast_called=True,
             fast_input_tokens=fast_input_tokens,
             fast_output_tokens=fast_output_tokens,
+            strong_called=True,
             strong_input_tokens=strong_input_tokens,
             strong_output_tokens=strong_output_tokens,
         )
 
-        total_input_tokens = (
-            fast_input_tokens
-            + strong_input_tokens
-        )
-
-        total_output_tokens = (
-            fast_output_tokens
-            + strong_output_tokens
-        )
+        total_input_tokens = _sum_token_counts(fast_input_tokens, strong_input_tokens)
+        total_output_tokens = _sum_token_counts(fast_output_tokens, strong_output_tokens)
         total_latency_ms = sum(
             value for value in (fast_latency_ms, strong_result.get("latency_ms"))
             if value is not None
