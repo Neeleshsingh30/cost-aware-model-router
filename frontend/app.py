@@ -69,6 +69,7 @@ def _as_bool(value):
 def _routing_label(decision):
     return {
         "fast_model": "Fast model accepted",
+        "fast_model_failed": "Fast model request failed",
         "direct_strong": "Direct strong-model route",
         "direct_strong_failed": "Direct strong-model route failed",
         "escalated_to_strong": "Escalated to strong model",
@@ -81,7 +82,8 @@ def _reason_label(reason):
         "high_complexity": "High complexity",
         "low_confidence": "Fast-model confidence below threshold",
         "fast_model_requested_escalation": "Fast model requested escalation",
-        "invalid_or_unavailable_fast_response": "Fast-model response was invalid or unavailable",
+        "invalid_fast_response": "Fast-model response was invalid",
+        "fast_provider_error": "Fast-model provider request failed",
         "confidence_above_threshold": "Fast-model confidence met the configured threshold",
     }
     return labels.get(reason, reason.replace("_", " ").capitalize() if reason else "")
