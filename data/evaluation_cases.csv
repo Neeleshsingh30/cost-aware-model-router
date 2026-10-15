@@ -1,121 +1,121 @@
 strategy,case_id,task_type,score,correct,model,initial_model,final_model,input_tokens,output_tokens,cost,error,escalated,status
-Always Fast Model,classification_01,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,classification_01,classification,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,classification_01,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,classification_02,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,classification_02,classification,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,classification_02,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,classification_03,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,classification_03,classification,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,classification_03,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,classification_04,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,classification_04,classification,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,classification_04,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,classification_05,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,classification_05,classification,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,classification_05,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,classification_06,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,classification_06,classification,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,classification_06,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,classification_07,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,classification_07,classification,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,classification_07,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,classification_08,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,classification_08,classification,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,classification_08,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,classification_09,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,classification_09,classification,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,classification_09,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,classification_10,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,classification_10,classification,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,classification_10,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,extraction_01,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,extraction_01,extraction,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,extraction_01,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,extraction_02,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,extraction_02,extraction,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,extraction_02,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,extraction_03,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,extraction_03,extraction,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,extraction_03,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,extraction_04,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,extraction_04,extraction,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,extraction_04,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,extraction_05,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,extraction_05,extraction,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,extraction_05,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,extraction_06,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,extraction_06,extraction,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,extraction_06,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,extraction_07,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,extraction_07,extraction,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,extraction_07,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,extraction_08,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,extraction_08,extraction,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,extraction_08,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,extraction_09,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,extraction_09,extraction,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,extraction_09,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,extraction_10,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,extraction_10,extraction,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,extraction_10,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,summarisation_01,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,summarisation_01,summarisation,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,summarisation_01,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,summarisation_02,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,summarisation_02,summarisation,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,summarisation_02,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,summarisation_03,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,summarisation_03,summarisation,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,summarisation_03,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,summarisation_04,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,summarisation_04,summarisation,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,summarisation_04,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,summarisation_05,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,summarisation_05,summarisation,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,summarisation_05,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,summarisation_06,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,summarisation_06,summarisation,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,summarisation_06,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,summarisation_07,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,summarisation_07,summarisation,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,summarisation_07,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,summarisation_08,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,summarisation_08,summarisation,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,summarisation_08,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,summarisation_09,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,summarisation_09,summarisation,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,summarisation_09,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,summarisation_10,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,summarisation_10,summarisation,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,summarisation_10,summarisation,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,qa_01,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,qa_01,qa,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,qa_01,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,qa_02,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,qa_02,qa,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,qa_02,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,qa_03,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,qa_03,qa,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,qa_03,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,qa_04,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,qa_04,qa,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,qa_04,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,qa_05,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,qa_05,qa,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,qa_05,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,qa_06,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,qa_06,qa,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,qa_06,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,qa_07,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,qa_07,qa,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,qa_07,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,qa_08,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,qa_08,qa,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,qa_08,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,qa_09,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,qa_09,qa,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,qa_09,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Fast Model,qa_10,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Always Strong Model,qa_10,qa,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
-Cost-Aware Router,qa_10,qa,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,,,,Could not connect to the model provider. Check internet access and CHAT_BASE_URL.,False,failed
+Always Fast Model,classification_01,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,92,3,4.12e-06,,False,success
+Always Strong Model,classification_01,classification,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,93,5,0.000236,,False,success
+Cost-Aware Router,classification_01,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,408,57,2.198e-05,,False,success
+Always Fast Model,classification_02,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,95,2,4.16e-06,,False,success
+Always Strong Model,classification_02,classification,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,96,31,0.000502,,False,success
+Cost-Aware Router,classification_02,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,411,62,2.253e-05,,False,success
+Always Fast Model,classification_03,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,95,2,4.16e-06,,False,success
+Always Strong Model,classification_03,classification,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,96,5,0.000242,,False,success
+Cost-Aware Router,classification_03,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,411,61,2.245e-05,,False,success
+Always Fast Model,classification_04,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,95,3,4.25e-06,,False,success
+Always Strong Model,classification_04,classification,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,96,58,0.000772,,False,success
+Cost-Aware Router,classification_04,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,411,54,2.185e-05,,False,success
+Always Fast Model,classification_05,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,103,3,4.58e-06,,False,success
+Always Strong Model,classification_05,classification,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,104,5,0.000258,,False,success
+Cost-Aware Router,classification_05,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,163,68,1.263e-05,,False,success
+Always Fast Model,classification_06,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,108,2,4.71e-06,,False,success
+Always Strong Model,classification_06,classification,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,109,25,0.000468,,False,success
+Cost-Aware Router,classification_06,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,168,65,1.258e-05,,False,success
+Always Fast Model,classification_07,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,103,2,4.5e-06,,False,success
+Always Strong Model,classification_07,classification,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,104,5,0.000258,,False,success
+Cost-Aware Router,classification_07,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,163,64,1.229e-05,,False,success
+Always Fast Model,classification_08,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,105,3,4.67e-06,,False,success
+Always Strong Model,classification_08,classification,0.0,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,106,5,0.000262,,False,success
+Cost-Aware Router,classification_08,classification,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,165,59,1.195e-05,,False,success
+Always Fast Model,classification_09,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,108,3,4.79e-06,,False,success
+Always Strong Model,classification_09,classification,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,109,5,0.000268,,False,success
+Cost-Aware Router,classification_09,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,168,54,1.165e-05,,False,success
+Always Fast Model,classification_10,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,106,2,4.62e-06,,False,success
+Always Strong Model,classification_10,classification,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,107,25,0.000464,,False,success
+Cost-Aware Router,classification_10,classification,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,166,86,1.428e-05,,False,success
+Always Fast Model,extraction_01,extraction,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,132,31,8.18e-06,,False,success
+Always Strong Model,extraction_01,extraction,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,131,28,0.000542,,False,success
+Cost-Aware Router,extraction_01,extraction,1.0,True,gpt-6-sol,deepseek-v4-flash,gpt-6-sol,323,64,0.00055312,,True,success
+Always Fast Model,extraction_02,extraction,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,147,38,9.4e-06,,False,success
+Always Strong Model,extraction_02,extraction,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,147,41,0.000704,,False,success
+Cost-Aware Router,extraction_02,extraction,1.0,True,gpt-6-sol,deepseek-v4-flash,gpt-6-sol,354,95,0.00071728,,True,success
+Always Fast Model,extraction_03,extraction,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,136,27,8.01e-06,,False,success
+Always Strong Model,extraction_03,extraction,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,135,29,0.00056,,False,success
+Cost-Aware Router,extraction_03,extraction,1.0,True,gpt-6-sol,deepseek-v4-flash,gpt-6-sol,331,69,0.00057163,,True,success
+Always Fast Model,extraction_04,extraction,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,143,41,9.49e-06,,False,success
+Always Strong Model,extraction_04,extraction,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,141,34,0.000622,,False,success
+Cost-Aware Router,extraction_04,extraction,1.0,True,gpt-6-sol,deepseek-v4-flash,gpt-6-sol,344,119,0.00063775,,True,success
+Always Fast Model,extraction_05,extraction,0.3333,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,149,34,9.15e-06,,False,success
+Always Strong Model,extraction_05,extraction,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,146,31,0.000602,,False,success
+Cost-Aware Router,extraction_05,extraction,0.0,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,209,101,1.736e-05,Invalid extraction JSON: Expecting value: line 1 column 1 (char 0),False,failed
+Always Fast Model,extraction_06,extraction,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,153,45,1.025e-05,,False,success
+Always Strong Model,extraction_06,extraction,0.8,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,152,39,0.000694,,False,success
+Cost-Aware Router,extraction_06,extraction,0.8,False,gpt-6-sol,deepseek-v4-flash,gpt-6-sol,365,91,0.00070737,,True,success
+Always Fast Model,extraction_07,extraction,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,159,68,1.246e-05,,False,success
+Always Strong Model,extraction_07,extraction,1.0,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,159,58,0.000898,,False,success
+Cost-Aware Router,extraction_07,extraction,1.0,True,gpt-6-sol,deepseek-v4-flash,gpt-6-sol,378,175,0.00091714,,True,success
+Always Fast Model,extraction_08,extraction,1.0,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,161,56,1.152e-05,,False,success
+Always Strong Model,extraction_08,extraction,0.8,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,160,42,0.00074,,False,success
+Cost-Aware Router,extraction_08,extraction,1.0,True,gpt-6-sol,deepseek-v4-flash,gpt-6-sol,381,97,0.00074404,,True,success
+Always Fast Model,extraction_09,extraction,0.5,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,183,48,1.177e-05,,False,success
+Always Strong Model,extraction_09,extraction,0.5,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,182,57,0.000934,,False,success
+Cost-Aware Router,extraction_09,extraction,0.5,False,gpt-6-sol,deepseek-v4-flash,gpt-6-sol,425,226,0.00115687,,True,success
+Always Fast Model,extraction_10,extraction,0.8333,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,180,68,1.334e-05,,False,success
+Always Strong Model,extraction_10,extraction,0.6667,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,176,110,0.001452,,False,success
+Cost-Aware Router,extraction_10,extraction,0.6667,False,gpt-6-sol,deepseek-v4-flash,gpt-6-sol,416,188,0.00148854,,True,success
+Always Fast Model,summarisation_01,summarisation,0.6538,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,128,36,8.44e-06,,False,success
+Always Strong Model,summarisation_01,summarisation,0.75,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,128,34,0.000596,,False,success
+Cost-Aware Router,summarisation_01,summarisation,0.72,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,188,83,1.495e-05,,False,success
+Always Fast Model,summarisation_02,summarisation,0.7213,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,132,46,9.45e-06,,False,success
+Always Strong Model,summarisation_02,summarisation,0.7797,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,133,46,0.000726,,False,success
+Cost-Aware Router,summarisation_02,summarisation,0.7077,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,192,111,1.75e-05,,False,success
+Always Fast Model,summarisation_03,summarisation,0.7869,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,141,41,9.41e-06,,False,success
+Always Strong Model,summarisation_03,summarisation,0.6667,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,143,39,0.000676,,False,success
+Cost-Aware Router,summarisation_03,summarisation,0.7586,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,457,99,2.761e-05,,False,success
+Always Fast Model,summarisation_04,summarisation,0.6506,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,150,55,1.098e-05,,False,success
+Always Strong Model,summarisation_04,summarisation,0.6076,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,151,68,0.000982,,False,success
+Cost-Aware Router,summarisation_04,summarisation,0.6279,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,210,115,1.86e-05,,False,success
+Always Fast Model,summarisation_05,summarisation,0.6364,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,136,45,9.54e-06,,False,success
+Always Strong Model,summarisation_05,summarisation,0.8,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,135,43,0.0007,,False,success
+Cost-Aware Router,summarisation_05,summarisation,0.6765,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,196,106,1.724e-05,,False,success
+Always Fast Model,summarisation_06,summarisation,0.7059,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,159,50,1.093e-05,,False,success
+Always Strong Model,summarisation_06,summarisation,0.6829,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,160,51,0.00083,,False,success
+Cost-Aware Router,summarisation_06,summarisation,0.5773,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,219,123,1.965e-05,,False,success
+Always Fast Model,summarisation_07,summarisation,0.72,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,158,46,1.055e-05,,False,success
+Always Strong Model,summarisation_07,summarisation,0.7838,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,160,47,0.00079,,False,success
+Cost-Aware Router,summarisation_07,summarisation,0.7021,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,218,139,2.097e-05,,False,success
+Always Fast Model,summarisation_08,summarisation,0.6076,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,157,50,1.084e-05,,False,success
+Always Strong Model,summarisation_08,summarisation,0.5753,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,157,48,0.000794,,False,success
+Cost-Aware Router,summarisation_08,summarisation,0.6494,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,217,111,1.855e-05,,False,success
+Always Fast Model,summarisation_09,summarisation,0.6437,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,168,60,1.216e-05,,False,success
+Always Strong Model,summarisation_09,summarisation,0.7353,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,170,44,0.00078,,False,success
+Cost-Aware Router,summarisation_09,summarisation,0.6437,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,228,129,2.054e-05,,False,success
+Always Fast Model,summarisation_10,summarisation,0.4404,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,174,80,1.411e-05,,False,success
+Always Strong Model,summarisation_10,summarisation,0.6392,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,175,65,0.001,,False,success
+Cost-Aware Router,summarisation_10,summarisation,0.4865,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,234,139,2.164e-05,,False,success
+Always Fast Model,qa_01,qa,0.5263,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,138,24,7.84e-06,,False,success
+Always Strong Model,qa_01,qa,0.7778,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,138,24,0.000516,,False,success
+Cost-Aware Router,qa_01,qa,0.5333,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,198,85,1.554e-05,,False,success
+Always Fast Model,qa_02,qa,0.68,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,151,38,9.57e-06,,False,success
+Always Strong Model,qa_02,qa,0.6818,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,151,40,0.000702,,False,success
+Cost-Aware Router,qa_02,qa,0.7778,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,211,88,1.634e-05,,False,success
+Always Fast Model,qa_03,qa,0.7556,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,140,34,8.77e-06,,False,success
+Always Strong Model,qa_03,qa,0.7556,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,139,36,0.000638,,False,success
+Cost-Aware Router,qa_03,qa,0.7826,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,200,116,1.826e-05,,False,success
+Always Fast Model,qa_04,qa,0.8235,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,146,34,9.02e-06,,False,success
+Always Strong Model,qa_04,qa,0.84,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,146,36,0.000652,,False,success
+Cost-Aware Router,qa_04,qa,0.8235,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,206,90,1.63e-05,,False,success
+Always Fast Model,qa_05,qa,0.7907,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,138,26,8.01e-06,,False,success
+Always Strong Model,qa_05,qa,0.7907,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,138,29,0.000566,,False,success
+Cost-Aware Router,qa_05,qa,0.7442,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,198,72,1.444e-05,,False,success
+Always Fast Model,qa_06,qa,0.6087,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,165,46,1.084e-05,,False,success
+Always Strong Model,qa_06,qa,0.678,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,167,37,0.000704,,False,success
+Cost-Aware Router,qa_06,qa,0.6154,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,225,97,1.77e-05,,False,success
+Always Fast Model,qa_07,qa,0.5926,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,181,43,1.126e-05,,False,success
+Always Strong Model,qa_07,qa,0.56,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,181,40,0.000762,,False,success
+Cost-Aware Router,qa_07,qa,0.5412,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,241,123,2.058e-05,,False,success
+Always Fast Model,qa_08,qa,0.48,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,180,25,9.69e-06,,False,success
+Always Strong Model,qa_08,qa,0.48,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,180,28,0.00064,,False,success
+Cost-Aware Router,qa_08,qa,0.4364,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,240,93,1.799e-05,,False,success
+Always Fast Model,qa_09,qa,0.5412,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,180,50,1.181e-05,,False,success
+Always Strong Model,qa_09,qa,0.7368,True,gpt-6-sol,gpt-6-sol,gpt-6-sol,180,43,0.00079,,False,success
+Cost-Aware Router,qa_09,qa,0.6237,True,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,240,127,2.088e-05,,False,success
+Always Fast Model,qa_10,qa,0.3495,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,196,51,1.257e-05,,False,success
+Always Strong Model,qa_10,qa,0.375,False,gpt-6-sol,gpt-6-sol,gpt-6-sol,197,46,0.000854,,False,success
+Cost-Aware Router,qa_10,qa,0.419,False,deepseek-v4-flash,deepseek-v4-flash,deepseek-v4-flash,256,146,2.316e-05,,False,success
