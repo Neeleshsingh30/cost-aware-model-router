@@ -617,13 +617,13 @@ The test set is reserved for assessment; keep prompt-tuning examples in a separa
 
 The latest saved evaluation run used 40 examples (10 per task), model IDs `deepseek-v4-flash` and `gpt-6-sol`, and dataset SHA-256 `00dcbb9313dff65613e95fda0799ce282b794a563561fc3331aade19008dc79a` on 2026-10-15. Its recorded aggregate results were:
 
-| Strategy | Accuracy | Total estimated cost | Savings vs. always strong |
-| --- | ---: | ---: | ---: |
-| Always fast | 70.95% | $0.00035392 | 98.65% |
-| Always strong | 76.16% | $0.02617600 | 0.00% |
-| Cost-aware router | 71.32% | $0.00805373 | 69.23% |
+| Strategy | Accuracy | Successful / failed | Total estimated cost | Savings vs. always strong |
+| --- | ---: | ---: | ---: | ---: |
+| Always fast | 70.95% | 40 / 0 | $0.00035392 | 98.65% |
+| Always strong | 76.16% | 40 / 0 | $0.02617600 | 0.00% |
+| Cost-aware router | 71.32% | 39 / 1 | $0.00805373 | 69.23% |
 
-This single 40-case run showed the router cost less than the strong-only baseline but scored 4.84 percentage points lower. It is a small benchmark, not a guarantee of production quality or savings. That run made 129 model calls: 40 fast-only baseline calls, 40 strong-only baseline calls, 40 router first-stage calls, and 9 router escalations.
+This single 40-case run showed the router cost less than the strong-only baseline but scored 4.84 percentage points lower. Its accuracy uses 39 successful router cases; `extraction_05` failed because the fast model returned invalid JSON. The failure and its usage/cost are recorded per case. This is a small benchmark, not a guarantee of production quality or savings. That run made 129 model calls: 40 fast-only baseline calls, 40 strong-only baseline calls, 40 router first-stage calls, and 9 router escalations.
 
 Run the complete offline test suite from the repository root:
 

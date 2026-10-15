@@ -1,0 +1,101 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+3 0 obj
+<< /Length 3846 >>
+stream
+BT /F1 18 Tf 30 578 Td (Final Submission Audit) Tj ET
+BT /F1 9 Tf 30 560 Td (Status and evidence summary | 15 October 2026) Tj ET
+30 531 m 762 531 l S
+BT /F2 9 Tf 34 536 Td (Mandatory criterion) Tj ET
+BT /F2 9 Tf 214 536 Td (Status) Tj ET
+BT /F2 9 Tf 304 536 Td (File / test evidence) Tj ET
+30 526 m 762 526 l S
+BT /F1 8 Tf 34 509 Td (1. Core app and request) Tj ET
+BT /F2 8 Tf 214 509 Td (COMPLETE) Tj ET
+BT /F1 8 Tf 304 509 Td (Frontend/backend request flow and dashboard are present. Evidence:) Tj ET
+BT /F1 8 Tf 34 499 Td (flow) Tj ET
+BT /F1 8 Tf 304 499 Td (frontend/, backend/app/main.py; local health checks returned HTTP) Tj ET
+BT /F1 8 Tf 304 489 Td (200.) Tj ET
+30 481 m 762 481 l S
+BT /F1 8 Tf 34 471 Td (2. Routing and decision) Tj ET
+BT /F2 8 Tf 214 471 Td (COMPLETE) Tj ET
+BT /F1 8 Tf 304 471 Td (Confidence and complexity routing implemented. Evidence: backend) Tj ET
+BT /F1 8 Tf 34 461 Td (logic) Tj ET
+BT /F1 8 Tf 304 461 Td (routing modules; covered by tests/test_task6_coverage.py.) Tj ET
+30 453 m 762 453 l S
+BT /F1 8 Tf 34 443 Td (3. Model provider) Tj ET
+BT /F2 8 Tf 214 443 Td (COMPLETE) Tj ET
+BT /F1 8 Tf 304 443 Td (Provider call and error handling are implemented. Evidence: backend) Tj ET
+BT /F1 8 Tf 34 433 Td (integration) Tj ET
+BT /F1 8 Tf 304 433 Td (provider modules; mocked provider coverage in) Tj ET
+BT /F1 8 Tf 304 423 Td (tests/test_task6_coverage.py.) Tj ET
+30 415 m 762 415 l S
+BT /F1 8 Tf 34 405 Td (4. Cost tracking) Tj ET
+BT /F2 8 Tf 214 405 Td (COMPLETE) Tj ET
+BT /F1 8 Tf 304 405 Td (Token usage, configured pricing, cost/savings, and) Tj ET
+BT /F1 8 Tf 304 395 Td (unavailable/zero-baseline handling documented and tested. Evidence:) Tj ET
+BT /F1 8 Tf 304 385 Td (backend cost modules; tests/test_task6_coverage.py.) Tj ET
+30 377 m 762 377 l S
+BT /F1 8 Tf 34 367 Td (5. Evaluation) Tj ET
+BT /F2 8 Tf 214 367 Td (PARTIAL) Tj ET
+BT /F1 8 Tf 304 367 Td (40-example evaluation results exist, but one router request failed) Tj ET
+BT /F1 8 Tf 304 357 Td (\(extraction_05\), and evaluation was not rerun in the final audit to) Tj ET
+BT /F1 8 Tf 304 347 Td (avoid paid calls. Evidence: data/evaluation_results.csv; README.md.) Tj ET
+30 339 m 762 339 l S
+BT /F1 8 Tf 34 329 Td (6. Automated tests) Tj ET
+BT /F2 8 Tf 214 329 Td (COMPLETE) Tj ET
+BT /F1 8 Tf 304 329 Td (Offline suite: 36 passed. Evidence: tests/run_offline_tests.py,) Tj ET
+BT /F1 8 Tf 304 319 Td (tests/test_task6_coverage.py.) Tj ET
+30 311 m 762 311 l S
+BT /F1 8 Tf 34 301 Td (7. Security and Git audit) Tj ET
+BT /F2 8 Tf 214 301 Td (COMPLETE) Tj ET
+BT /F1 8 Tf 304 301 Td (Environment files ignored, example config retained; tracked files) Tj ET
+BT /F1 8 Tf 304 291 Td (and reachable Git history scanned without finding credential) Tj ET
+BT /F1 8 Tf 304 281 Td (signatures. No history rewrite or push.) Tj ET
+30 273 m 762 273 l S
+BT /F1 8 Tf 34 263 Td (8. README and deployment) Tj ET
+BT /F2 8 Tf 214 263 Td (PARTIAL) Tj ET
+BT /F1 8 Tf 304 263 Td (Commands, architecture, evaluation method, pricing assumptions, and) Tj ET
+BT /F1 8 Tf 34 253 Td (docs) Tj ET
+BT /F1 8 Tf 304 253 Td (Render setup documented. Actual live Render settings/logs) Tj ET
+BT /F1 8 Tf 304 243 Td (unavailable, so localhost:5432 source could not be externally) Tj ET
+BT /F1 8 Tf 304 233 Td (confirmed. Evidence: README.md.) Tj ET
+30 225 m 762 225 l S
+BT /F1 8 Tf 34 215 Td (9. Final submission audit) Tj ET
+BT /F2 8 Tf 214 215 Td (COMPLETE) Tj ET
+BT /F1 8 Tf 304 215 Td (Criteria mapped with evidence; backend and frontend health checked;) Tj ET
+BT /F1 8 Tf 304 205 Td (tests and evaluation artifacts reviewed. GitHub push/history rewrite) Tj ET
+BT /F1 8 Tf 304 195 Td (require separate authorization.) Tj ET
+30 187 m 762 187 l S
+BT /F1 8 Tf 30 17 Td (Evaluation: 40 examples; Router 71.32% accuracy, $0.00805373 cost, 39 successful / 1 failed. Tests: 36 passed.) Tj ET
+endstream
+endobj
+4 0 obj
+<< /Type /Page /Parent 5 0 R /MediaBox [0 0 792 612] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 3 0 R >>
+endobj
+5 0 obj
+<< /Type /Pages /Kids [4 0 R] /Count 1 >>
+endobj
+6 0 obj
+<< /Type /Catalog /Pages 5 0 R >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000015 00000 n 
+0000000085 00000 n 
+0000000160 00000 n 
+0000004058 00000 n 
+0000004194 00000 n 
+0000004251 00000 n 
+trailer
+<< /Size 7 /Root 6 0 R >>
+startxref
+4300
+%%EOF
