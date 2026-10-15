@@ -569,7 +569,9 @@ Run the strategy evaluation from the project root:
 python -m backend.app.evaluation.evaluator
 ```
 
-It compares fast-only, strong-only, and cost-aware routing strategies using `data/test_dataset.json`, then writes `data/evaluation_results.csv`. It is separate from live Streamlit requests.
+It compares fast-only, strong-only, and cost-aware routing using the 40-case held-out `data/test_dataset.json` (10 examples per task). It writes summary rows to `data/evaluation_results.csv` and per-case outcomes to `data/evaluation_cases.csv`. Both outputs record the dataset hash and effective model/routing/pricing configuration. A full run performs up to 120 live model calls and may incur provider charges.
+
+The test set is reserved for assessment; keep prompt-tuning examples in a separate development set. The repository currently has no development dataset, and its prior history cannot prove whether the held-out cases were previously used for tuning. Scoring uses exact normalized classification match, field-level extraction match, and token-level F1 for summarisation/Q&A. Token F1 is only lexical overlap, not a semantic or factuality judge; see [the evaluation protocol](docs/evaluation-protocol.md) for definitions and limitations.
 
 Run the unit tests (install pytest first if needed):
 
@@ -578,7 +580,7 @@ python -m pip install pytest
 python -m pytest
 ```
 
-Live model requests may incur provider charges. The offline evaluator and unit tests serve different purposes from live API requests.
+Unit tests mock provider calls; the evaluator is a live assessment run and may incur provider charges.
 
 ## Data and privacy
 

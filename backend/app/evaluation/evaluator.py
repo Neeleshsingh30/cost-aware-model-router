@@ -35,16 +35,19 @@ Evaluation notes:
 
 from __future__ import annotations
 import csv
+import hashlib
 import json
 import re
 import sys
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from ..core.claude_client import call_model
 from ..core.cost_tracker import calculate_cost
 from ..core.prompt_builder import build_prompt
 from ..core.router import route_request
+from ..core import config as app_config
 
 try:
     from ..core.config import FAST_MODEL_ID, STRONG_MODEL_ID
@@ -62,6 +65,18 @@ STRATEGY_ROUTER = "Cost-Aware Router"
 STRATEGIES = [STRATEGY_FAST, STRATEGY_STRONG, STRATEGY_ROUTER]
 TASK_TYPES = ["classification", "extraction", "summarisation", "qa"]
 RESULT_COLUMNS = [
+    "run_timestamp_utc",
+    "dataset_file",
+    "dataset_sha256",
+    "dataset_examples",
+    "fast_model_id",
+    "strong_model_id",
+    "confidence_threshold",
+    "complexity_threshold",
+    "fast_input_price_per_mtok",
+    "fast_output_price_per_mtok",
+    "strong_input_price_per_mtok",
+    "strong_output_price_per_mtok",
     "level",
     "strategy",
     "task_type",
@@ -91,7 +106,9 @@ CASE_COLUMNS = [
     "cost",
     "error",
     "escalated",
+    "status",
 ]
+CASES_PATH = DATA_DIR / "evaluation_cases.csv"
 
 
 def load_dataset(path: Path = DATASET_PATH) -> list[dict[str, Any]]:
@@ -113,6 +130,11 @@ def load_dataset(path: Path = DATASET_PATH) -> list[dict[str, Any]]:
             raise ValueError(
                 f"Dataset item {index} is missing fields: {sorted(missing)}"
             )
+        if item["task_type"] not in TASK_TYPES:
+            raise ValueError(f"Dataset item {index} has an unsupported task type.")
+    case_ids = [str(item["id"]) for item in data]
+    if len(case_ids) != len(set(case_ids)):
+        raise ValueError("Evaluation case IDs must be unique.")
     return data
 
 
@@ -222,7 +244,7 @@ def extraction_score(expected: dict[str, Any], actual: Any) -> float:
     for key, expected_value in expected.items():
         if key in actual and structured_value_equal(expected_value, actual[key]):
             matched += 1
-    return round(matched / len(expected), 4)
+    return round(matched / max(len(expected), len(actual)), 4)
 
 
 def parse_json_answer(text: str) -> Any:
@@ -342,7 +364,7 @@ def model_key(model: str) -> str:
     raise ValueError(f"Unknown model for cost calculation: {model}")
 
 
-def model_cost(model: str, input_tokens: int, output_tokens: int) -> float:
+def model_cost(model: str, input_tokens: int | None, output_tokens: int | None) -> float | None:
     """
     Calculate model cost using configured
     fast/strong pricing.
@@ -350,10 +372,12 @@ def model_cost(model: str, input_tokens: int, output_tokens: int) -> float:
     Convert Decimal to float so evaluator
     calculations use one numeric type.
     """
+    if input_tokens is None or output_tokens is None:
+        return None
     cost = calculate_cost(
         model=model_key(model), input_tokens=input_tokens, output_tokens=output_tokens
     )
-    return float(cost)
+    return float(cost) if cost is not None else None
 
 
 def evaluate_baseline_case(case: dict[str, Any], model: str) -> dict[str, Any]:
@@ -369,15 +393,15 @@ def evaluate_baseline_case(case: dict[str, Any], model: str) -> dict[str, Any]:
             "model": model,
             "initial_model": model,
             "final_model": model,
-            "input_tokens": 0,
-            "output_tokens": 0,
-            "cost": 0.0,
+            "input_tokens": None,
+            "output_tokens": None,
+            "cost": None,
             "error": str(error),
             "escalated": False,
         }
     result = call_model(model=model, prompt=prompt)
-    input_tokens = result.get("input_tokens", 0)
-    output_tokens = result.get("output_tokens", 0)
+    input_tokens = result.get("input_tokens")
+    output_tokens = result.get("output_tokens")
     if result.get("error"):
         return {
             "score": 0.0,
@@ -443,9 +467,9 @@ def evaluate_router_case(case: dict[str, Any]) -> dict[str, Any]:
             "model": "",
             "initial_model": "",
             "final_model": "",
-            "input_tokens": 0,
-            "output_tokens": 0,
-            "cost": 0.0,
+            "input_tokens": None,
+            "output_tokens": None,
+            "cost": None,
             "error": str(error),
             "escalated": False,
         }
@@ -458,15 +482,28 @@ def evaluate_router_case(case: dict[str, Any]) -> dict[str, Any]:
             "model": "",
             "initial_model": "",
             "final_model": "",
-            "input_tokens": 0,
-            "output_tokens": 0,
-            "cost": 0.0,
+            "input_tokens": None,
+            "output_tokens": None,
+            "cost": None,
             "error": f"Router error: {error}",
             "escalated": False,
         }
     initial_model = result.get("initial_model", "")
     final_model = result.get("final_model", "")
     answer = result.get("answer", "")
+    if result.get("error"):
+        return {
+            "score": 0.0,
+            "correct": False,
+            "model": final_model,
+            "initial_model": initial_model,
+            "final_model": final_model,
+            "input_tokens": result.get("input_tokens"),
+            "output_tokens": result.get("output_tokens"),
+            "cost": result.get("actual_cost"),
+            "error": result["error"],
+            "escalated": bool(result.get("escalated", False)),
+        }
     if case["task_type"].lower() == "extraction":
         try:
             answer = parse_json_answer(answer)
@@ -477,9 +514,9 @@ def evaluate_router_case(case: dict[str, Any]) -> dict[str, Any]:
                 "model": final_model,
                 "initial_model": initial_model,
                 "final_model": final_model,
-                "input_tokens": result.get("input_tokens", 0),
-                "output_tokens": result.get("output_tokens", 0),
-                "cost": float(result.get("actual_cost", 0.0) or 0),
+                "input_tokens": result.get("input_tokens"),
+                "output_tokens": result.get("output_tokens"),
+                "cost": result.get("actual_cost"),
                 "error": f"Invalid extraction JSON: {error}",
                 "escalated": bool(result.get("escalated", False)),
             }
@@ -490,9 +527,9 @@ def evaluate_router_case(case: dict[str, Any]) -> dict[str, Any]:
         "model": final_model,
         "initial_model": initial_model,
         "final_model": final_model,
-        "input_tokens": result.get("input_tokens", 0),
-        "output_tokens": result.get("output_tokens", 0),
-        "cost": float(result.get("actual_cost", 0.0) or 0),
+        "input_tokens": result.get("input_tokens"),
+        "output_tokens": result.get("output_tokens"),
+        "cost": result.get("actual_cost"),
         "error": result.get("error"),
         "escalated": bool(result.get("escalated", False)),
     }
@@ -558,11 +595,14 @@ def summarize_strategy(
     valid_scores = [
         float(result["score"]) for result in case_results if result.get("error") is None
     ]
-    accuracy = sum(valid_scores) / len(valid_scores) if valid_scores else 0.0
-    total_cost = sum(
-        (float(result.get("cost", 0.0) or 0.0) for result in case_results), 0.0
+    accuracy = sum(valid_scores) / len(valid_scores) if valid_scores else None
+    costs = [result.get("cost") for result in case_results]
+    total_cost = (
+        round(sum(float(cost) for cost in costs), 8)
+        if costs and all(cost is not None for cost in costs)
+        else None
     )
-    average_cost = total_cost / total_requests if total_requests else 0.0
+    average_cost = total_cost / total_requests if total_cost is not None and total_requests else None
     fast_calls = 0
     strong_calls = 0
     escalations = 0
@@ -581,14 +621,14 @@ def summarize_strategy(
         "total_requests": total_requests,
         "successful_requests": successful_requests,
         "failed_requests": failed_requests,
-        "accuracy": round(accuracy, 4),
-        "total_cost": round(total_cost, 8),
-        "average_cost_per_request": round(average_cost, 8),
+        "accuracy": round(accuracy, 4) if accuracy is not None else None,
+        "total_cost": total_cost,
+        "average_cost_per_request": round(average_cost, 8) if average_cost is not None else None,
         "fast_model_calls": fast_calls,
         "strong_model_calls": strong_calls,
         "escalations": escalations,
-        "savings_vs_always_strong": 0.0,
-        "savings_percentage_vs_always_strong": 0.0,
+        "savings_vs_always_strong": None,
+        "savings_percentage_vs_always_strong": None,
     }
 
 
@@ -606,11 +646,19 @@ def apply_savings(summaries: list[dict[str, Any]]) -> None:
         ),
         None,
     )
-    if strong_baseline is None:
+    if strong_baseline is None or strong_baseline["total_cost"] is None:
+        for summary in summaries:
+            if summary["level"] == "overall":
+                summary["savings_vs_always_strong"] = None
+                summary["savings_percentage_vs_always_strong"] = None
         return
     strong_cost = float(strong_baseline["total_cost"])
     for summary in summaries:
         if summary["level"] != "overall":
+            continue
+        if summary["total_cost"] is None:
+            summary["savings_vs_always_strong"] = None
+            summary["savings_percentage_vs_always_strong"] = None
             continue
         strategy_cost = float(summary["total_cost"])
         savings = round(strong_cost - strategy_cost, 8)
@@ -633,6 +681,17 @@ def save_evaluation_results(
         writer.writerows(summaries)
 
 
+def save_evaluation_cases(
+    case_results: list[dict[str, Any]], path: Path = CASES_PATH
+) -> None:
+    """Save per-case scores, outcomes, model calls, token usage, and cost."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=CASE_COLUMNS, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(case_results)
+
+
 def run_evaluation(
     dataset_path: Path = DATASET_PATH, save_results: bool = True
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
@@ -646,6 +705,24 @@ def run_evaluation(
         Per-task results
     """
     dataset = load_dataset(dataset_path)
+    if dataset_path.resolve() == DATASET_PATH.resolve():
+        task_counts = Counter(case["task_type"].lower().strip() for case in dataset)
+        if len(dataset) != 40 or any(task_counts[task] != 10 for task in TASK_TYPES):
+            raise ValueError("The held-out evaluation set must contain 40 cases, 10 per task type.")
+    run_metadata = {
+        "run_timestamp_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "dataset_file": dataset_path.name,
+        "dataset_sha256": hashlib.sha256(dataset_path.read_bytes()).hexdigest(),
+        "dataset_examples": len(dataset),
+        "fast_model_id": FAST_MODEL_ID,
+        "strong_model_id": STRONG_MODEL_ID,
+        "confidence_threshold": app_config.CONFIDENCE_THRESHOLD,
+        "complexity_threshold": app_config.COMPLEXITY_THRESHOLD,
+        "fast_input_price_per_mtok": app_config.FAST_INPUT_PRICE_PER_MTOK,
+        "fast_output_price_per_mtok": app_config.FAST_OUTPUT_PRICE_PER_MTOK,
+        "strong_input_price_per_mtok": app_config.STRONG_INPUT_PRICE_PER_MTOK,
+        "strong_output_price_per_mtok": app_config.STRONG_OUTPUT_PRICE_PER_MTOK,
+    }
     all_case_results: list[dict[str, Any]] = []
     strategy_results: dict[str, list[dict[str, Any]]] = {
         STRATEGY_FAST: [],
@@ -678,9 +755,10 @@ def run_evaluation(
                     "model": result.get("model", ""),
                     "initial_model": result.get("initial_model", ""),
                     "final_model": result.get("final_model", ""),
-                    "input_tokens": result.get("input_tokens", 0),
-                    "output_tokens": result.get("output_tokens", 0),
-                    "cost": result.get("cost", 0.0),
+                    "input_tokens": result.get("input_tokens"),
+                    "output_tokens": result.get("output_tokens"),
+                    "cost": result.get("cost"),
+                    "status": "failed" if result.get("error") else "success",
                     "error": result.get("error"),
                     "escalated": result.get("escalated", False),
                 }
@@ -705,8 +783,11 @@ def run_evaluation(
             task_summaries.append(task_summary)
     apply_savings(summaries)
     all_summaries = summaries + task_summaries
+    for summary in all_summaries:
+        summary.update(run_metadata)
     if save_results:
         save_evaluation_results(all_summaries)
+        save_evaluation_cases(all_case_results)
     return (summaries, all_case_results)
 
 
@@ -731,15 +812,15 @@ def print_results_table(summaries: list[dict[str, Any]]) -> None:
         rows.append(
             [
                 item["strategy"],
-                f"{item['accuracy'] * 100:.2f}%",
+                f"{item['accuracy'] * 100:.2f}%" if item["accuracy"] is not None else "N/A",
                 str(item["total_requests"]),
-                f"${item['total_cost']:.8f}",
-                f"${item['average_cost_per_request']:.8f}",
+                f"${item['total_cost']:.8f}" if item["total_cost"] is not None else "N/A",
+                f"${item['average_cost_per_request']:.8f}" if item["average_cost_per_request"] is not None else "N/A",
                 str(item["fast_model_calls"]),
                 str(item["strong_model_calls"]),
                 str(item["escalations"]),
-                f"${item['savings_vs_always_strong']:.8f}",
-                f"{item['savings_percentage_vs_always_strong']:.2f}%",
+                f"${item['savings_vs_always_strong']:.8f}" if item["savings_vs_always_strong"] is not None else "N/A",
+                f"{item['savings_percentage_vs_always_strong']:.2f}%" if item["savings_percentage_vs_always_strong"] is not None else "N/A",
             ]
         )
     widths = [
