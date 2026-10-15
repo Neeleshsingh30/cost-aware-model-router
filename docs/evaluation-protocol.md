@@ -18,7 +18,7 @@ The CSV's `accuracy` field is the mean score over successful cases; for extracti
 
 ## Outputs and run cost
 
-Run `python -m backend.app.evaluation.evaluator` from the repository root. It performs three live strategies for each held-out case (fast-only, strong-only, and cost-aware routing), so a full run can make up to 120 provider calls and may incur charges.
+Run `python -m backend.app.evaluation.evaluator` from the repository root. It performs a fast-only baseline call, a strong-only baseline call, and a router run for each held-out case. Each router run starts with the fast model and can add a strong-model call if it escalates. Therefore a full 40-case run makes at least 120 and up to 160 provider calls, and may incur charges. The saved 2026-10-15 run made 129 calls (9 router escalations).
 
 - `data/evaluation_results.csv` contains overall and per-task strategy summaries plus run configuration and dataset hash.
 - `data/evaluation_cases.csv` contains each case's score, status, model calls, usage, cost, and error.
