@@ -62,6 +62,22 @@ def _as_float(value, default=0.0):
         return default
 
 
+def _optional_float(value):
+    if value is None or str(value).strip() == "":
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _complete_total(rows, key):
+    values = [row.get(key) for row in rows]
+    if not values or any(value is None for value in values):
+        return None
+    return sum(values)
+
+
 def _as_bool(value):
     return str(value).strip().lower() in {"true", "1", "yes"}
 
@@ -108,11 +124,12 @@ def load_routing_logs():
         normalized = []
         for row in rows:
             item = {column: row.get(column) for column in EXPECTED_COLUMNS}
-            item["actual_cost"] = _as_float(item.get("actual_cost"))
-            item["sonnet_baseline_cost"] = _as_float(item.get("sonnet_baseline_cost"))
-            item["savings"] = _as_float(item.get("savings"))
-            item["input_tokens"] = _as_float(item.get("input_tokens"))
-            item["output_tokens"] = _as_float(item.get("output_tokens"))
+            item["actual_cost"] = _optional_float(item.get("actual_cost"))
+            item["sonnet_baseline_cost"] = _optional_float(item.get("sonnet_baseline_cost"))
+            item["savings"] = _optional_float(item.get("savings"))
+            item["savings_percentage"] = _optional_float(item.get("savings_percentage"))
+            item["input_tokens"] = _optional_float(item.get("input_tokens"))
+            item["output_tokens"] = _optional_float(item.get("output_tokens"))
             item["complexity_score"] = _as_float(item.get("complexity_score"))
             item["latency_ms"] = _as_float(item.get("latency_ms"), None)
             item["haiku_confidence"] = _as_float(item.get("haiku_confidence"), None)
@@ -199,7 +216,7 @@ def _render_result(result):
         st.metric("Estimated cost", f"${actual:.8f}" if actual is not None else "Unavailable", border=True)
         st.metric("Strong-model baseline", f"${baseline:.8f}" if baseline is not None else "Unavailable", border=True)
     if not usage_available:
-        st.info("Cost analysis is unavailable because the provider returned no token usage.")
+        st.info("Cost analysis is unavailable because token usage or configured model pricing is missing or invalid.")
     elif result.get("savings_percentage") is not None:
         st.metric("Estimated savings", f"${savings:.8f}", f"{result['savings_percentage']:.2f}% vs. strong-model baseline", border=True)
     if result.get("escalated") and result.get("escalation_reason"):
@@ -441,11 +458,11 @@ def render_dashboard_page():
     )
     latencies = [row["latency_ms"] for row in filtered if row.get("latency_ms") is not None]
     average_latency = sum(latencies) / len(latencies) if latencies else None
-    actual_cost = sum(row["actual_cost"] for row in filtered)
-    baseline = sum(row["sonnet_baseline_cost"] for row in filtered)
-    savings = sum(row["savings"] for row in filtered)
+    actual_cost = _complete_total(filtered, "actual_cost")
+    baseline = _complete_total(filtered, "sonnet_baseline_cost")
+    savings = _complete_total(filtered, "savings")
     success_rate = successful / total * 100 if total else 0
-    savings_rate = savings / baseline * 100 if baseline > 0 else 0
+    savings_rate = savings / baseline * 100 if savings is not None and baseline is not None and baseline > 0 else None
 
     with st.container(horizontal=True):
         st.metric("Requests", f"{total:,}", border=True)
@@ -456,9 +473,11 @@ def render_dashboard_page():
     with st.container(horizontal=True):
         st.metric("Average latency", f"{average_latency:,.0f} ms" if average_latency is not None else "N/A", border=True)
         st.metric("Failed requests", f"{failed:,}", border=True)
-        st.metric("Estimated spend", f"${actual_cost:.8f}", border=True)
-        st.metric("Strong-model baseline", f"${baseline:.8f}", border=True)
-        st.metric("Estimated savings", f"${savings:.8f}", f"{savings_rate:.2f}%", border=True)
+        st.metric("Estimated spend", f"${actual_cost:.8f}" if actual_cost is not None else "N/A", border=True)
+        st.metric("Strong-model baseline", f"${baseline:.8f}" if baseline is not None else "N/A", border=True)
+        st.metric("Estimated savings", f"${savings:.8f}" if savings is not None else "N/A", f"{savings_rate:.2f}%" if savings_rate is not None else None, border=True)
+    if actual_cost is None or baseline is None or savings is None:
+        st.info("Cost totals are unavailable for one or more requests because token usage or model pricing is missing.")
 
     view = st.segmented_control(
         "Dashboard view",
@@ -502,12 +521,15 @@ def render_dashboard_page():
 
     elif view == "Costs":
         st.subheader("Estimated cost comparison")
-        _render_bar_chart(
-            [("Cost-aware router", actual_cost, f"${actual_cost:.8f}"),
-             ("Always strong model", baseline, f"${baseline:.8f}")],
-            aria_label="Estimated router spend compared with always using the strong model",
-        )
-        timestamped = [row for row in filtered if row["_timestamp"]]
+        if actual_cost is not None and baseline is not None:
+            _render_bar_chart(
+                [("Cost-aware router", actual_cost, f"${actual_cost:.8f}"),
+                 ("Always strong model", baseline, f"${baseline:.8f}")],
+                aria_label="Estimated router spend compared with always using the strong model",
+            )
+        else:
+            st.info("Cost comparison is unavailable because some requests lack usage or pricing data.")
+        timestamped = [row for row in filtered if row["_timestamp"] and row.get("savings") is not None]
         if timestamped:
             cumulative = 0.0
             trend = []
@@ -533,9 +555,9 @@ def render_dashboard_page():
                 "Escalated": "Yes" if row["escalated"] else "No",
                 "Status": row.get("request_status") or "Unknown",
                 "Latency (ms)": row.get("latency_ms"),
-                "Input tokens": int(row["input_tokens"]),
-                "Output tokens": int(row["output_tokens"]),
-                "Estimated cost (USD)": row["actual_cost"],
+                "Input tokens": int(row["input_tokens"]) if row["input_tokens"] is not None else "N/A",
+                "Output tokens": int(row["output_tokens"]) if row["output_tokens"] is not None else "N/A",
+                "Estimated cost (USD)": row["actual_cost"] if row["actual_cost"] is not None else "Unavailable",
                 "Savings (USD)": row["savings"],
                 "Routing reason": row.get("routing_reason") or row.get("escalation_reason") or "",
             }
