@@ -437,6 +437,14 @@ All settings are read from `.env`.
 | `LONG_QA_CONTEXT_THRESHOLD`, `LONG_SUMMARISATION_THRESHOLD` | Task-specific long-context thresholds. |
 | `ROUTER_API_URL` | Optional frontend setting for the FastAPI base URL; defaults to `http://127.0.0.1:8001`. |
 
+### Provider integration verification
+
+The backend uses the Anthropic Python SDK with Experiential Labs' Anthropic Messages lane. The SDK sends `POST /v1/messages` and authenticates with the `x-api-key` header; the configured origin remains `https://api.experientiallabs.ai` (do not append `/v1/messages` to `CHAT_BASE_URL`). SDK retries are disabled so a failed request is not silently resent by the client. Provider-side routing may still follow the model's configured gateway waterfall.
+
+The configured model slugs `deepseek-v4-flash` and `gpt-6-sol` match the current [Experiential DeepSeek V4 Flash catalog entry](https://platform.experientiallabs.ai/models/deepseek-v4-flash) and [GPT-6 Sol catalog entry](https://platform.experientiallabs.ai/models/gpt-6-sol). Access for a particular API key depends on its organization; verify it with the authenticated `GET /v1/models` endpoint if a request reports that the model is unavailable. See Experiential's [Anthropic API](https://platform.experientiallabs.ai/docs/anthropic) and [authentication documentation](https://platform.experientiallabs.ai/docs/authentication).
+
+Request validation limits `input_text` to 20,000 characters, `question` to 5,000, and the total request fields to 25,000 characters. If provider usage or either configured per-model token price is missing or malformed, cost fields are returned as unavailable instead of being reported as zero.
+
 The values in `.env.example` are sample configuration. Update model IDs and prices to match your provider.
 
 **Tuning tip:** a lower `COMPLEXITY_THRESHOLD` sends more requests straight to the strong model, and a higher `CONFIDENCE_THRESHOLD` escalates more fast-model answers. Both raise cost and quality; use the offline evaluator to compare settings before changing them.
