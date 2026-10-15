@@ -286,6 +286,8 @@ The exact rules live in `backend/app/core/router.py`. Thresholds and prices are 
 
 The confidence value is self-reported by the fast model. It is used as a routing signal and has not been calibrated as a probability or independently validated. Requests routed directly to the strong model do not run the fast-model confidence assessment, so their confidence is shown as unavailable. A direct strong-model route is recorded separately from an escalation.
 
+Provider call failures on the fast-model path are recorded as failed requests and do not automatically trigger a strong-model call. This avoids an extra potentially chargeable call when provider authentication, availability, quota, or connectivity may affect both models. A successful provider call that returns a malformed or invalid fast-model response can still escalate to the strong model; that is an answer-quality fallback rather than a provider-error retry.
+
 Complexity scoring uses task type and input length (`LONG_INPUT_THRESHOLD`, `VERY_LONG_INPUT_THRESHOLD`, `LONG_QA_CONTEXT_THRESHOLD`, `LONG_SUMMARISATION_THRESHOLD`) and records the reasons for the score.
 
 ## Build and run pipeline
