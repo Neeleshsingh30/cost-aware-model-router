@@ -50,6 +50,20 @@ def get_int_env(name: str) -> int:
         )
 
 
+def get_optional_price_env(name: str) -> float | None:
+    """Return a usable nonnegative price, or None when unavailable."""
+    value = os.getenv(name)
+    if value is None or not value.strip():
+        return None
+    try:
+        number = float(value)
+    except ValueError:
+        return None
+    if not math.isfinite(number) or number < 0:
+        return None
+    return number
+
+
 # =========================================================
 # Experiential Labs
 # =========================================================
@@ -86,11 +100,11 @@ STRONG_MODEL_ID = get_required_env("STRONG_MODEL_ID")
 # Fast Model Pricing
 # ---------------------------------------------------------
 
-FAST_INPUT_PRICE_PER_MTOK = get_float_env(
+FAST_INPUT_PRICE_PER_MTOK = get_optional_price_env(
     "FAST_INPUT_PRICE_PER_MTOK"
 )
 
-FAST_OUTPUT_PRICE_PER_MTOK = get_float_env(
+FAST_OUTPUT_PRICE_PER_MTOK = get_optional_price_env(
     "FAST_OUTPUT_PRICE_PER_MTOK"
 )
 
@@ -99,11 +113,11 @@ FAST_OUTPUT_PRICE_PER_MTOK = get_float_env(
 # Strong Model Pricing
 # ---------------------------------------------------------
 
-STRONG_INPUT_PRICE_PER_MTOK = get_float_env(
+STRONG_INPUT_PRICE_PER_MTOK = get_optional_price_env(
     "STRONG_INPUT_PRICE_PER_MTOK"
 )
 
-STRONG_OUTPUT_PRICE_PER_MTOK = get_float_env(
+STRONG_OUTPUT_PRICE_PER_MTOK = get_optional_price_env(
     "STRONG_OUTPUT_PRICE_PER_MTOK"
 )
 
@@ -135,7 +149,7 @@ for _name, _price in (
     ("STRONG_INPUT_PRICE_PER_MTOK", STRONG_INPUT_PRICE_PER_MTOK),
     ("STRONG_OUTPUT_PRICE_PER_MTOK", STRONG_OUTPUT_PRICE_PER_MTOK),
 ):
-    if _price < 0:
+    if _price is not None and _price < 0:
         raise ValueError(f"Environment variable '{_name}' cannot be negative.")
 
 for _name, _threshold in (
