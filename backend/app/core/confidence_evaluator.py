@@ -277,6 +277,7 @@ def evaluate_with_fast_model(task_prompt: str) -> dict:
             "input_tokens": model_result["input_tokens"],
             "output_tokens": model_result["output_tokens"],
             "latency_ms": model_result["latency_ms"],
+            "provider_error": True,
         }
 
     parsed_result = parse_confidence_response(
@@ -289,6 +290,7 @@ def evaluate_with_fast_model(task_prompt: str) -> dict:
             "input_tokens": model_result["input_tokens"],
             "output_tokens": model_result["output_tokens"],
             "latency_ms": model_result["latency_ms"],
+            "provider_error": False,
         }
     )
 
