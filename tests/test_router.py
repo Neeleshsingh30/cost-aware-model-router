@@ -325,6 +325,58 @@ def test_fast_provider_error_does_not_call_strong_model():
     print("PASS: Fast provider failure does not call strong model")
 
 
+def test_numeric_answer_receives_independent_strong_review():
+    """High fast-model confidence must not skip arithmetic review."""
+    fake_fast_result = {
+        "answer": "Total is $1,834, leaving $534 over budget.",
+        "confidence": 1.0,
+        "needs_escalation": False,
+        "reason": "Confident arithmetic.",
+        "valid": True,
+        "model": router.FAST_MODEL_ID,
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "latency_ms": 500,
+    }
+    fake_review_result = {
+        "text": "Verified total is $1,834, which exceeds the $1,300 budget by $534.",
+        "input_tokens": 150,
+        "output_tokens": 25,
+        "model": router.STRONG_MODEL_ID,
+        "latency_ms": 900,
+        "error": None,
+    }
+
+    with patch(
+        "backend.app.core.router.calculate_complexity",
+        return_value={"score": 0.10, "reasons": []},
+    ), patch(
+        "backend.app.core.router.evaluate_with_fast_model",
+        return_value=fake_fast_result,
+    ), patch(
+        "backend.app.core.router.call_model",
+        return_value=fake_review_result,
+    ) as mock_review:
+        result = router.route_request(
+            text=(
+                "Budget $1,300. Lodging $760, meals $576, transport $168, "
+                "and activity $330. Calculate the total and remaining budget."
+            ),
+            task_type="qa",
+        )
+
+    assert result["answer"] == fake_review_result["text"]
+    assert result["initial_model"] == router.FAST_MODEL_ID
+    assert result["final_model"] == router.STRONG_MODEL_ID
+    assert result["confidence"] == 1.0
+    assert result["escalated"] is True
+    assert result["routing_reason"] == "independent_answer_review"
+    review_prompt = mock_review.call_args.kwargs["prompt"]
+    assert "Independently verify" in review_prompt
+    assert fake_fast_result["answer"] in review_prompt
+    print("PASS: Numeric answer gets independent strong-model review")
+
+
 def main():
     print("=" * 60)
     print("STAGE 6 ROUTER TESTS")
