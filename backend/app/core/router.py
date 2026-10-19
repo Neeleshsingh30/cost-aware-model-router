@@ -17,6 +17,10 @@ from .complexity_detector import calculate_complexity
 from .confidence_evaluator import (
     evaluate_with_fast_model,
 )
+from .answer_verifier import (
+    build_answer_review_prompt,
+    requires_independent_review,
+)
 
 from .cost_tracker import (
     calculate_cost,
@@ -323,6 +327,7 @@ def route_request(
         fast_output_tokens=fast_output_tokens,
     )
     fast_latency_ms = fast_result.get("latency_ms")
+    independent_review_required = requires_independent_review(text)
 
     # A provider call failure is terminal for this request. Retrying it
     # immediately with the strong model can incur another charge while
@@ -450,6 +455,7 @@ def route_request(
         fast_confidence
         < CONFIDENCE_THRESHOLD
         or fast_result["needs_escalation"]
+        or independent_review_required
     ):
 
         if (
@@ -461,7 +467,11 @@ def route_request(
 
         else:
 
-            escalation_reason = "fast_model_requested_escalation"
+            escalation_reason = (
+                "independent_answer_review"
+                if independent_review_required
+                else "fast_model_requested_escalation"
+            )
 
         # -----------------------------------------------
         # Call Strong Model
@@ -469,7 +479,11 @@ def route_request(
 
         strong_result = call_model(
             model=STRONG_MODEL_ID,
-            prompt=text,
+            prompt=(
+                build_answer_review_prompt(text, fast_answer)
+                if independent_review_required
+                else text
+            ),
         )
 
         strong_input_tokens = strong_result.get("input_tokens")
