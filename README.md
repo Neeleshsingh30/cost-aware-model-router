@@ -163,7 +163,9 @@ flowchart TD
     E -->|"No"| F["Call FAST model first"]
 
     F --> G{"Answer valid AND<br/>confidence at or above<br/>CONFIDENCE_THRESHOLD?"}
-    G -->|"Yes"| H["Use fast-model answer"]
+    G -->|"Yes"| Q{"Numeric calculation<br/>needs review?"}
+    Q -->|"No"| H["Use fast-model answer"]
+    Q -->|"Yes"| X["Strong model reviews answer"]
     G -->|"No"| X["Escalate: call STRONG model"]
 
     S --> Z["Final answer"]
@@ -182,7 +184,7 @@ flowchart TD
     classDef strong fill:#F8DDDD,stroke:#B04040,color:#7A1F1F;
     class A,W start;
     class B,C,D,Z,T,U,V step;
-    class E,G decision;
+    class E,G,Q decision;
     class F,H fast;
     class S,X strong;
 ```
@@ -273,9 +275,9 @@ The exact rules live in `backend/app/core/router.py`. Thresholds and prices are 
 | 1 | Task fails validation | Request rejected before any model call |
 | 2 | Complexity score at or above `COMPLEXITY_THRESHOLD` | Strong model is called directly |
 | 3 | Complexity below threshold | Fast model is tried first |
-| 4 | Fast answer is valid and confidence is at or above `CONFIDENCE_THRESHOLD` | Fast answer is returned |
-| 5 | Fast answer is invalid, or confidence is below `CONFIDENCE_THRESHOLD` | Escalate to the strong model |
-| 6 | Escalation happened | Tokens and cost of both calls are totalled |
+| 4 | Fast answer is valid and confidence is at or above `CONFIDENCE_THRESHOLD`, with no arithmetic review trigger | Fast answer is returned |
+| 5 | Fast answer is invalid, confidence is below `CONFIDENCE_THRESHOLD`, or numeric arithmetic needs independent review | Strong model is called; arithmetic cases include the candidate answer for review and correction |
+| 6 | Strong-model review or escalation happened | Tokens and cost of both calls are totalled |
 
 ### Possible outcomes
 
@@ -296,6 +298,8 @@ Complexity scoring uses task type and input length (`LONG_INPUT_THRESHOLD`, `VER
 Complexity is a deterministic heuristic; it does not call a model. It combines input length, reasoning keywords, multiple-instruction markers, task-specific long-context signals, and comparison keywords. The weights are 0.25 for length, 0.20 for reasoning, 0.15 for multiple instructions, 0.15 for task-specific complexity, 0.15 for comparison, and 0.10 for long context; the final score is capped at 1.0. A score at or above `COMPLEXITY_THRESHOLD` sends the request directly to the strong model. These keyword and length signals are explainable, but they can miss meaning expressed differently.
 
 For requests below that threshold, the fast model returns an answer, a self-reported confidence from 0 to 1, and a `needs_escalation` flag. The router escalates if the response is malformed/invalid, its confidence is below `CONFIDENCE_THRESHOLD`, or the model explicitly asks for escalation. Self-reported confidence is not calibrated probability or an independent quality check.
+
+Requests containing multiple numeric values and arithmetic cues (such as calculate, total, budget, cost, or remaining) also receive an independent review from the configured strong model, even when fast-model confidence is high. The reviewer recalculates the result and returns a corrected answer when needed. This adds a strong-model call, latency, and cost for matching requests; it is a targeted arithmetic safeguard, not a general fact-checker or a correctness guarantee.
 
 ## Build and run pipeline
 
