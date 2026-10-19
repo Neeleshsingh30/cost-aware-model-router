@@ -98,6 +98,7 @@ def _reason_label(reason):
         "high_complexity": "High complexity",
         "low_confidence": "Fast-model confidence below threshold",
         "fast_model_requested_escalation": "Fast model requested escalation",
+        "independent_answer_review": "Strong-model arithmetic review",
         "invalid_fast_response": "Fast-model response was invalid",
         "fast_provider_error": "Fast-model provider request failed",
         "confidence_above_threshold": "Fast-model confidence met the configured threshold",
